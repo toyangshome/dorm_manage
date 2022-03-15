@@ -33,7 +33,7 @@ import {
   Space,
   Switch,
   Progress,
-  Result
+  Result, Radio
 } from 'ant-design-vue'
 import { createApp } from 'vue'
 
@@ -79,5 +79,6 @@ const loadComponent = (app: ReturnType<typeof createApp>): void => {
   app.use(Switch)
   app.use(Progress)
   app.use(Result)
+  app.use(Radio)
 }
 export default loadComponent

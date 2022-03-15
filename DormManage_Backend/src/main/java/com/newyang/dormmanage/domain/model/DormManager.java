@@ -19,9 +19,11 @@ public class DormManager {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "dormBuildId", nullable = false)
+    @Column(name = "dormBuildId")
     private Integer dormBuildId;
 
+    @Column(name = "dormBuildName")
+    private String dormBuildName;
     @Column(name = "name")
     private String name;
 

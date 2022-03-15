@@ -1,0 +1,39 @@
+html, body, #app {
+  height: 100%;
+  background-color: #ffffff;
+  min-width: 1000px;
+  overflow: hidden;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.drag,.header-bar {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+
+}
+
+::-webkit-scrollbar {
+  width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: rgba(175, 175, 175, 0.72);
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: transparent;
+}
+
+
+

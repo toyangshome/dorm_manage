@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "vite --mode development",
-    "build": "vue-tsc --noEmit && vite build --mode production",
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext js,ts,vue",
     "lint:fix": "eslint . --fix --ext js,vue,ts"

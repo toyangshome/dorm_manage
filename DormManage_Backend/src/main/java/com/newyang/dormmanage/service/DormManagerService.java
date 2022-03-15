@@ -1,5 +1,11 @@
 package com.newyang.dormmanage.service;
 
+import com.newyang.dormmanage.domain.vo.DormManagerListVO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
+import org.springframework.data.querydsl.QPageRequest;
+
 /**
  * @author NewYang
  * @email 1013836629@qq.com
@@ -7,4 +13,5 @@ package com.newyang.dormmanage.service;
  */
 
 public interface DormManagerService {
+    Page<DormManagerListVO> list(PageRequest pageRequest);
 }
