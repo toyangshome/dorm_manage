@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "node": false
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    /** @see https://eslint.vuejs.org/rules/ */
+    "plugin:vue/vue3-recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "vue/no-v-html": [0],
+    "comma-dangle": "off",
+    "vue/multi-word-component-names": [0],
+    "@typescript-eslint/consistent-type-imports": [0],
+    "@typescript-eslint/no-unused-vars": "off",
+    "quotes": ["warn", "single"]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "fontend",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite --mode development",
+    "build": "vue-tsc --noEmit && vite build --mode production",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,ts,vue",
+    "lint:fix": "eslint . --fix --ext js,vue,ts"
+  },
+  "dependencies": {
+    "ant-design-vue": "^3.0.0-beta.7",
+    "axios": "^0.21.1",
+    "echarts": "^5.2.1",
+    "lodash": "^4.17.21",
+    "pinia": "^2.0.12",
+    "vue": "^3.2.25",
+    "vue-router": "4.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.18",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.1",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "@vitejs/plugin-vue-jsx": "^1.3.7",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.3.0",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
+    "prettier": "2.5.1",
+    "typescript": "^4.5.4",
+    "typescript-plugin-css-modules": "^3.4.0",
+    "vite": "^2.8.0",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-importer": "^0.2.5",
+    "vue-tsc": "^0.29.8"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "none"
+  }
+}
