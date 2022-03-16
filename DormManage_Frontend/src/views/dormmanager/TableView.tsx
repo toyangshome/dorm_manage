@@ -1,7 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import { ColumnsType } from 'ant-design-vue/lib/table'
-import { DormManagerModel } from '@/api/model/dormManager'
 import { Button, Table } from 'ant-design-vue'
+import { DormManagerModel } from '@/api/model/user'
 
 const useColumns = () => {
   const columns: ColumnsType<DormManagerModel> = [

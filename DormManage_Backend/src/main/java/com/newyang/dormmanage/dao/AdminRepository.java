@@ -1,6 +1,7 @@
 package com.newyang.dormmanage.dao;
 
 import com.newyang.dormmanage.domain.model.Admin;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -9,6 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  * @date 2022/3/15 17:42
  */
 
-public interface AdminRepository extends CrudRepository<Admin,Integer> {
-    Admin findByAdminId(int id);
+public interface AdminRepository extends JpaRepository<Admin,Integer> {
 }

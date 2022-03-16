@@ -12,22 +12,20 @@
     <form action='#' class='login__form' method='POST'>
       <div>
         <label for='email'>用户名</label>
-        <input id='email' type='email' name='email' placeholder='username'>
+        <input id='email' type='email' :value='loginData.username' placeholder='username'>
       </div>
       <div>
         <label for='password'>密码</label>
-        <input id='password' type='password' name='password' placeholder='password'>
+        <input id='password' type='password' :value='loginData.password' placeholder='password'>
       </div>
       <div>
-        <a-radio-group v-model:value="value1" button-style="solid">
-          <a-radio-button value="a">Hangzhou</a-radio-button>
-          <a-radio-button value="b">Shanghai</a-radio-button>
-          <a-radio-button value="c">Beijing</a-radio-button>
-          <a-radio-button value="d">Chengdu</a-radio-button>
+        <a-radio-group v-model:value='loginData.role' button-style='solid'>
+          <a-radio-button v-for='role in Object.keys(roleMap)' :key='role' :value='parseInt(role)'>{{ roleMap[role] }}
+          </a-radio-button>
         </a-radio-group>
       </div>
       <div>
-        <input class='button' value='登录' type='button' @click='login' >
+        <input class='button' value='登录' type='button' @click='login'>
       </div>
     </form>
   </div>
@@ -42,8 +40,18 @@
 </template>
 
 <script lang='ts' setup>
+import { reactive, ref } from 'vue'
+import { LoginAPI, LoginParams, roleMap } from '@/api/login'
 
-const login = () => {
+const loginData = reactive<LoginParams>({
+  username: '',
+  password: '',
+  role: 0
+})
+const login = async () => {
+  const { data: res } = await LoginAPI.login({
+    ...loginData
+  })
 
 }
 </script>

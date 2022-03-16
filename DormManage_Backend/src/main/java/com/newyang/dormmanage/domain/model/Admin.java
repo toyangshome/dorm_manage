@@ -3,7 +3,6 @@ package com.newyang.dormmanage.domain.model;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "t_admin")
@@ -11,9 +10,9 @@ import java.io.Serializable;
 public class Admin {
 
     @Id
-    @Column(name = "adminId")
+    @Column(name = "adminId",nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int adminId;
+    private Integer adminId;
 
     @Column(name = "userName")
     private String userName;
@@ -37,11 +36,11 @@ public class Admin {
     }
 
 
-    public int getAdminId () {
+    public int getId () {
         return adminId;
     }
 
-    public void setAdminId (int adminId) {
+    public void setId (int adminId) {
         this.adminId = adminId;
     }
 

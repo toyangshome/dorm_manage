@@ -1,15 +1,15 @@
 package com.newyang.dormmanage.domain.model;
 
-import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@ToString
 @Table(name = "t_dormmanager")
 public class DormManager {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "dormManId", nullable = false)
     private Integer dormManId;
 
@@ -32,6 +32,70 @@ public class DormManager {
 
     @Column(name = "tel")
     private String tel;
+
+    public Integer getId () {
+        return dormManId;
+    }
+
+    public void setId (Integer dormManId) {
+        this.dormManId = dormManId;
+    }
+
+    public String getUserName () {
+        return userName;
+    }
+
+    public void setUserName (String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword () {
+        return password;
+    }
+
+    public void setPassword (String password) {
+        this.password = password;
+    }
+
+    public Integer getDormBuildId () {
+        return dormBuildId;
+    }
+
+    public void setDormBuildId (Integer dormBuildId) {
+        this.dormBuildId = dormBuildId;
+    }
+
+    public String getDormBuildName () {
+        return dormBuildName;
+    }
+
+    public void setDormBuildName (String dormBuildName) {
+        this.dormBuildName = dormBuildName;
+    }
+
+    public String getName () {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
+    }
+
+    public String getSex () {
+        return sex;
+    }
+
+    public void setSex (String sex) {
+        this.sex = sex;
+    }
+
+    public String getTel () {
+        return tel;
+    }
+
+    public void setTel (String tel) {
+        this.tel = tel;
+    }
 
 
 }

@@ -2,6 +2,7 @@ package com.newyang.dormmanage.controller;
 
 import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.domain.model.DormBuild;
+import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("dorm_build")
+@Api("宿舍楼栋API")
 public class DormBuildController {
 
     @PostMapping("list")

@@ -7,10 +7,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_student")
 @ToString
+
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "studentId", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "studentId")
     private Integer studentId;
 
     @Column(name = "stuNum", length = 20)

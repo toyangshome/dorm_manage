@@ -13,7 +13,7 @@ public class DormBuild implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "dormBuildId")
-    private int dormBuildId;
+    private Integer dormBuildId;
     @Column(name = "dormBuildName")
     private String dormBuildName;
     @Column(name = "dormBuildDetail")
@@ -30,11 +30,11 @@ public class DormBuild implements Serializable {
     }
 
 
-    public int getDormBuildId () {
+    public int getId () {
         return dormBuildId;
     }
 
-    public void setDormBuildId (int dormBuildId) {
+    public void setId (int dormBuildId) {
         this.dormBuildId = dormBuildId;
     }
 

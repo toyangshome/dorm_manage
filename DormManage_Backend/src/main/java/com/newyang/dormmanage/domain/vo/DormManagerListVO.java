@@ -2,6 +2,7 @@ package com.newyang.dormmanage.domain.vo;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author NewYang
@@ -9,7 +10,7 @@ import lombok.Data;
  * @date 2022/3/15 23:14
  */
 
-@Builder
+@Accessors(chain = true)
 @Data
 public class DormManagerListVO {
     private Integer dormManId;

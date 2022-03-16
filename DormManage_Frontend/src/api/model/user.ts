@@ -1,3 +1,6 @@
+interface AdminModel {
+
+}
 interface DormManagerModel {
   dormManId?: number
   userName?: string
@@ -6,6 +9,12 @@ interface DormManagerModel {
   sex?: string
   tel?:string
 }
+interface StudentModel {
 
+}
 
-export {DormManagerModel}
+export {
+  AdminModel,
+  DormManagerModel,
+  StudentModel
+}

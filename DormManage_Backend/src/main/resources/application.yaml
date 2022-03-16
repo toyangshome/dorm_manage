@@ -13,3 +13,13 @@ spring:
     password: zxc200219
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_dorm?useUnicode=true&characterEncoding=UTF8
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+# Swagger UI
+knife4j:
+  enable: true
+  basic:
+    enable: true
+    username: root
+    password: 123456

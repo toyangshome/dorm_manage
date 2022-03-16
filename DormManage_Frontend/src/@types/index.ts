@@ -54,12 +54,6 @@ export enum HttpStatusCode {
 }
 
 /**
- * 前后端接口数据的响应码
- */
-export enum RESTCode {
-}
-
-/**
  * 前后端接口数据格式
  */
 export interface DataType<T> {
@@ -77,33 +71,3 @@ export interface HttpResponse<T> extends AxiosResponse {
   statusText: string;
   data: DataType<T>;
 }
-
-/**
- * 判题语言枚举
- */
-export enum Language {
-  'C' = 1,
-  'C++' = 2,
-  'Java' = 3,
-  'Python' = 4
-}
-
-/**
- * 判题结果枚举
- */
-export enum RESULT_STR {
-  'Waiting' = -1,
-  'Accepted' = 0,
-  'Presentation Error' = 1,
-  'Time Limit Exceeded' = 2,
-  'Memory Limit Exceeded' = 3,
-  'Wrong Answer' = 4,
-  'Runtime Error' = 5,
-  'Output Limit Exceeded' = 6,
-  'Compile Error' = 7,
-  'System Error' = 8,
-  'Server Error' = 9
-}
-
-// 对于判题结果显示的色彩
-export const ResultTagColors = ['#87d068', '#e2aa0a', '#f50', '#f50', '#f50', '#f50', '#f50', '#f50', '#f50', 'rgb(179 68 255)']

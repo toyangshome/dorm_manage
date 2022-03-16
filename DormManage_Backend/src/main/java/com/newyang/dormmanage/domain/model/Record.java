@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "t_record")
 public class Record {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "recordId", nullable = false)
     private Integer recordId;
 

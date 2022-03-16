@@ -1,12 +1,16 @@
 package com.newyang.dormmanage.service.impl;
 
+import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.dao.DormManagerRepository;
+import com.newyang.dormmanage.domain.model.DormManager;
 import com.newyang.dormmanage.domain.vo.DormManagerListVO;
 import com.newyang.dormmanage.service.DormManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @author NewYang
@@ -26,15 +30,36 @@ public class DormManagerServiceImpl implements DormManagerService {
     public Page<DormManagerListVO> list (PageRequest pageRequest) {
         Page<DormManagerListVO> result = dmRepo
                 .findAll(pageRequest)
-                .map((item) -> DormManagerListVO
-                        .builder()
-                        .dormManId(item.getDormManId())
-                        .sex(item.getSex())
-                        .tel(item.getTel())
-                        .dormBuildName(item.getDormBuildName())
-                        .userName(item.getUserName())
-                        .name(item.getName()).build());
+                .map((item) -> new DormManagerListVO()
+                        .setDormManId(item.getId())
+                        .setSex(item.getSex())
+                        .setTel(item.getTel())
+                        .setDormBuildName(item.getDormBuildName())
+                        .setUserName(item.getUserName())
+                        .setName(item.getName()));
 
         return result;
+    }
+
+    @Override
+    public void delete (Integer id) {
+        dmRepo.deleteById(id);
+    }
+
+    @Override
+    public Response<Void> update (DormManager dormManager) {
+        Optional<DormManager> dm = dmRepo.findById(dormManager.getId());
+        if (dm.isPresent()) {
+            DormManager updateDm = dm.get();
+            updateDm.setUserName(dormManager.getUserName());
+            updateDm.setDormBuildName(dormManager.getDormBuildName());
+            updateDm.setName(dormManager.getName());
+            updateDm.setDormBuildId(dormManager.getDormBuildId());
+            updateDm.setSex(dormManager.getSex());
+            updateDm.setTel(dormManager.getTel());
+            dmRepo.saveAndFlush(updateDm);
+            return Response.success();
+        }
+        return Response.failure(-1,"目标不存在");
     }
 }
