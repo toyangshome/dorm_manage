@@ -2,13 +2,17 @@ package com.newyang.dormmanage.service.impl;
 
 import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.dao.StudentRepository;
+import com.newyang.dormmanage.domain.dto.StudentUpdateDTO;
 import com.newyang.dormmanage.domain.model.Student;
 import com.newyang.dormmanage.domain.vo.StudentListVO;
+import com.newyang.dormmanage.domain.vo.StudentVO;
 import com.newyang.dormmanage.service.StudentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -17,7 +21,7 @@ import java.util.Optional;
  * @email 1013836629@qq.com
  * @date 2022/3/16 14:37
  */
-
+@Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository stRepo;
 
@@ -27,16 +31,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<StudentListVO> list (PageRequest pageRequest) {
+    public Page<StudentListVO> list (PageRequest pageRequest, Example<Student> example) {
+
         return stRepo
                 .findAll(pageRequest)
                 .map((student -> new StudentListVO()
-                                .setStudentId(student.getId())
-                                .setDormName(student.getDormName())
-                                .setSex(student.getSex())
-                                .setName(student.getName())
-                                .setStuNum(student.getStuNum())
-                                .setDormBuildId(student.getDormBuildId())
+                        .setStudentId(student.getId())
+                        .setDormName(student.getDormName())
+                        .setSex(student.getSex())
+                        .setName(student.getName())
+                        .setStuNum(student.getStuNum())
+                        .setDormBuildId(student.getDormBuildId())
                                 .setTel(student.getTel())
                         )
                 );
@@ -48,14 +53,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Response<Void> update (Student newStudent) {
-        Optional<Student> findStd = stRepo.findById(newStudent.getId());
+    public Response<StudentVO> update (StudentUpdateDTO newStudent) {
+        Optional<Student> findStd = stRepo.findById(newStudent.getStudentId());
         if (findStd.isPresent()) {
+
             Student oldStd = findStd.get();
-            BeanUtils.copyProperties(newStudent,oldStd);
-            stRepo.saveAndFlush(oldStd);
-            return Response.success();
+            BeanUtils.copyProperties(newStudent, oldStd);
+            Student student = stRepo.saveAndFlush(oldStd);
+
+            return Response.success(StudentVO.convertFromStudent(student));
         }
-        return Response.failure(-1,"目标不存在");
+        return Response.failure(- 1, "目标不存在");
     }
 }

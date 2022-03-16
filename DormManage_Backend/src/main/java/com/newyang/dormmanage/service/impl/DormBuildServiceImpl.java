@@ -7,6 +7,7 @@ import com.newyang.dormmanage.domain.model.DormBuild;
 import com.newyang.dormmanage.service.DormBuildService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,8 @@ public class DormBuildServiceImpl implements DormBuildService {
     }
 
     @Override
-    public Page<DormBuild> list (PageRequest pageRequest) {
-        return dmbRepo.findAll(pageRequest);
+    public Page<DormBuild> list (PageRequest pageRequest, Example<DormBuild> example) {
+        return dmbRepo.findAll(example, pageRequest);
     }
 
     @Override
@@ -40,10 +41,11 @@ public class DormBuildServiceImpl implements DormBuildService {
 
     @Override
     public Response<DormBuild> update (DormBuild newDormBuild) {
+
         Optional<DormBuild> old = dmbRepo.findById(newDormBuild.getId());
         if (old.isPresent()) {
             DormBuild dormBuild = old.get();
-            BeanUtils.copyProperties(dormBuild,newDormBuild);
+            BeanUtils.copyProperties(dormBuild, newDormBuild);
             dmbRepo.saveAndFlush(dormBuild);
         }
         return Response.failure(ResStatus.USER_NOT_EXIST);

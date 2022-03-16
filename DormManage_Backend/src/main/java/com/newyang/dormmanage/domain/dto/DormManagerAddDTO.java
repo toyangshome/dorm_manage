@@ -5,11 +5,9 @@ import lombok.Data;
 /**
  * @author NewYang
  * @email 1013836629@qq.com
- * @date 2022/3/16 0:29
+ * @date 2022/3/16 18:55
  */
 
-
-public class PageQueryDTO {
-    private int current;
-    private int pageSize;
+@Data
+public class DormManagerAddDTO {
 }

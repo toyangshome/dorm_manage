@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("user")
-@Api("用户基本操作API")
+@Api(tags = "用户基本操作API")
 public class UserController {
     private final LoginService loginService;
     private final PasswordService passwordService;
@@ -58,4 +58,5 @@ public class UserController {
         }
 
     }
+
 }

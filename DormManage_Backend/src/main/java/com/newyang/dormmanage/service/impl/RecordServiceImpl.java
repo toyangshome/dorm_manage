@@ -5,6 +5,7 @@ import com.newyang.dormmanage.dao.RecordRepository;
 import com.newyang.dormmanage.domain.model.Record;
 import com.newyang.dormmanage.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public Page<Record> list (PageRequest pageRequest) {
-        return rcRepo.findAll(pageRequest);
+    public Page<Record> list (PageRequest pageRequest, Example<Record> example) {
+        return rcRepo.findAll(example, pageRequest);
     }
 
     @Override
