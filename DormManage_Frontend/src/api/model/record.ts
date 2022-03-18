@@ -14,6 +14,7 @@ export interface RecordListParams {
   page: Page
   dormBuildName?: string
   studentName?: string
+  dormName?: string
 }
 
 export interface RecordUpdateParams {

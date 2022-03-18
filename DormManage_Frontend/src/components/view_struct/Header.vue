@@ -1,29 +1,29 @@
 <template>
   <div>
     <a-layout-header
-      class="wbu-header header-bar"
-      style="background: #fff; padding: 0; height: 44px"
+      class='wbu-header header-bar'
+      style='background: #fff; padding: 0; height: 44px'
     >
-      <a-dropdown placement="bottomLeft">
-        <div class="userinfo no-drag">
+      <a-dropdown placement='bottomLeft'>
+        <div class='userinfo no-drag'>
           <span @click.prevent>
-            <a-avatar class="avatar" :size="32">
+            <a-avatar class='avatar' :size='32'>
               <template #icon>
-                <UserOutlined style="color: rgb(2,186,253)" />
+                <UserOutlined style='color: rgb(2,186,253)' />
               </template>
             </a-avatar>
           </span>
         </div>
         <template #overlay>
-          <a-menu class="menu">
-            <a-menu-item key="settings" @click="changePassword">
+          <a-menu class='menu'>
+            <a-menu-item key='settings' @click='changePassword'>
               <template #icon>
                 <setting-outlined />
               </template>
               修改密码
             </a-menu-item>
             <a-menu-divider />
-            <a-menu-item key="logout" @click="logout">
+            <a-menu-item key='logout' @click='logout'>
               <template #icon>
                 <LogoutOutlined />
               </template>
@@ -36,8 +36,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent,  } from 'vue';
+<script lang='ts'>
+import { defineComponent, inject, nextTick } from 'vue'
 import {
   HomeOutlined,
   LogoutOutlined,
@@ -46,40 +46,45 @@ import {
   CloseOutlined,
   MinusOutlined,
   FullscreenExitOutlined,
-  FullscreenOutlined,
-} from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router'
+  FullscreenOutlined
+} from '@ant-design/icons-vue'
+import { useRoute, useRouter } from 'vue-router'
+import { LoginAPI } from '@/api/login'
+import useUserStore from '@/store/userStore'
 
 export default defineComponent({
   name: 'WbuHeader',
   components: {
     UserOutlined,
     SettingOutlined,
-    HomeOutlined,
     LogoutOutlined
   },
-  setup () {
-    const username = 'newyang';
-    const router = useRouter();
+  setup() {
+    const router = useRouter()
+    const userStore = useUserStore()
+    const reload = inject('reload') as () => any
     const logout = () => {
-      router.push('/login')
-      console.log('logout');
-    };
+      LoginAPI.quit().then(() => {
+        userStore.reset()
+        router.push('/login').then(() => {
+          reload()
+        })
+      })
+    }
     const changePassword = () => {
       router.push('/change_pwd')
-      console.log('changePassword');
-    };
+      console.log('changePassword')
+    }
     return {
-      username,
       logout,
       changePassword,
-      navigator,
-    };
-  },
-});
+      navigator
+    }
+  }
+})
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .wbu-header {
   display: flex;
   align-items: center;
@@ -96,6 +101,7 @@ export default defineComponent({
   .userinfo:hover {
     background-color: rgba(252, 245, 245, 0.73);
   }
+
   .menu {
     width: 120px;
   }

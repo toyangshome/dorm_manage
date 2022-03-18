@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
+import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { StudentModel } from '@/api/model/user'
 import { ColumnsType, ColumnType } from 'ant-design-vue/es/table'
 import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
@@ -9,21 +9,27 @@ import table_style from '@/views/style/table.module.less'
 import { RoleEnum } from '@/@types'
 import userStore from '@/store/userStore'
 import RecordAdd from '@/views/record/RecordAdd'
+import useBuildStore from '@/store/dormBuildStore'
+import StudentAdd from '@/views/student/StudentAdd'
 
 const data = reactive<StudentModel[]>([])
 const loading = ref(false)
+const recordAddModalVisible = ref<boolean>(false)
 
 const useState = () => {
+  const reqParams = reactive({
+    page: {
+      current: computed(() => pagination.current - 1),
+      pageSize: computed(() => pagination.pageSize)
+    },
+    dormBuildName: null,
+    studentName: null,
+    dormName: null
+  })
+
   async function loadStudents() {
     loading.value = true
-    const { data: res } = await StudentAPI.list({
-      page: {
-        current: pagination.current - 1,
-        pageSize: pagination.pageSize
-      },
-      dormBuildName: null,
-      studentName: null
-    }).finally(() => loading.value = false)
+    const { data: res } = await StudentAPI.list(reqParams).finally(() => loading.value = false)
     if (res.code !== 200) {
       return message.error('加载失败')
     }
@@ -52,7 +58,8 @@ const useState = () => {
   })
   return {
     pagination,
-    loadStudents
+    loadStudents,
+    reqParams
   }
 }
 const useColumns = () => {
@@ -71,8 +78,8 @@ const useColumns = () => {
     },
     {
       title: '宿舍楼栋',
-      key: 'dormBuildId',
-      dataIndex: 'dormBuildId',
+      key: 'dormBuildName',
+      dataIndex: 'dormBuildName',
       align: 'center'
     },
     {
@@ -99,7 +106,6 @@ const useColumns = () => {
   }
 }
 const operate = (role: number): ColumnType => {
-
   return {
     title: '操作',
     key: 'id',
@@ -111,12 +117,17 @@ const operate = (role: number): ColumnType => {
         // todo
       }
       const deleteClick = () => {
-        console.log(data.at(index))
-
-        // todo
+        StudentAPI.delete(data[index].studentId)
+          .then(({ data: res }) => {
+            if (res.code === 200) {
+              data.splice(index, 1)
+              return message.success('删除成功')
+            }
+            return message.error('删除失败')
+          })
       }
       const addClick = () => {
-
+        recordAddModalVisible.value = true
       }
       let opt
       if (role === RoleEnum.ADMIN) {
@@ -156,10 +167,12 @@ export default defineComponent({
   name: 'StudentTableView',
   setup() {
     const store = userStore()
-    const { pagination, loadStudents } = useState()
+    const { pagination, loadStudents, reqParams } = useState()
     const { columns } = useColumns()
     const role = store.$state.currentRole
     const addModalVisible = ref<boolean>(false)
+    const selectionLoading = ref<boolean>(false)
+    const buildStore = useBuildStore()
     onBeforeMount(async () => {
       await loadStudents()
     })
@@ -179,28 +192,47 @@ export default defineComponent({
           centered
           closable={true}
           v-model:visible={addModalVisible.value}>
+          <StudentAdd />
+        </Modal>
+        <Modal
+          footer={null}
+          width={400}
+          centered
+          closable={true}
+          v-model:visible={recordAddModalVisible.value}>
           <RecordAdd />
         </Modal>
         <div class={classes.operate_bar}>
-          {role === RoleEnum.ADMIN ?
-            <Button
-              class={classes.add_btn}
-              type={'primary'}
-              onClick={() => addModalVisible.value = true}>
-              添加
-            </Button>
-            :
-            <div />
+          {
+            role === RoleEnum.ADMIN ?
+              <Button type={'primary'} onClick={() => addModalVisible.value = true}>添加</Button>
+              :
+              <div />
           }
           <div class={classes.search_bar}>
-            <Select style={{ width: '150px' }}>
-              <Select.Option value={1}>学号</Select.Option>
-              <Select.Option value={2}>宿舍楼栋</Select.Option>
-              <Select.Option value={3}>寝室号</Select.Option>
-              <Select.Option value={4}>性别</Select.Option>
+            <Select
+              placeholder={'宿舍'}
+              style={{ 'width': '100px' }}
+              onMousedown={() => {
+                selectionLoading.value = true
+                buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
+              }}
+              loading={selectionLoading.value}
+              v-model:value={reqParams.dormBuildName}
+            >
+              {buildStore.getDormBuilds.map(dormBuild => {
+                return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
+              })}
             </Select>
-            <Input />
-            <Button type={'primary'}>查询</Button>
+            <Input type={'number'}
+                   style={{ 'width': '120px' }}
+                   placeholder={'宿舍号'}
+                   v-model:value={reqParams.dormName} />
+            <Input
+              placeholder={'姓名'}
+              style={{ 'width': '150px' }}
+              v-model:value={reqParams.studentName} />
+            <Button type={'primary'} onClick={() => loadStudents()}>查询</Button>
           </div>
         </div>
         <Table

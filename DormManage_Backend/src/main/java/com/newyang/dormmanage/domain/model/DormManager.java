@@ -16,7 +16,6 @@ public class DormManager {
     @Column(name = "password")
     private String password;
 
-
     @Column(name = "name")
     private String name;
 
@@ -26,8 +25,8 @@ public class DormManager {
     @Column(name = "tel")
     private String tel;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "dormBuildId", referencedColumnName = "dormBuildId", insertable = false, updatable = false, nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "dormBuildId", referencedColumnName = "dormBuildId", insertable = false, updatable = false)
     private DormBuild dormBuild;
 
     public Integer getId () {

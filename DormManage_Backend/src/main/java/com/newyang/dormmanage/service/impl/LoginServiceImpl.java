@@ -95,7 +95,8 @@ public class LoginServiceImpl implements LoginService {
                         .setName(student.getName())
                         .setSex(student.getSex())
                         .setTel(student.getTel())
-                        .setDormBuildId(1)
+                        .setDormBuildId(student.getDormBuild().getId())
+                        .setDormBuildName(student.getDormBuild().getDormBuildName())
                         .setDormName(student.getDormName())
                         .setStuNum(student.getStuNum())
                 );

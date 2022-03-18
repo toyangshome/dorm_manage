@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
+import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { ColumnsType, ColumnType } from 'ant-design-vue/es/table'
 import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
 import classes from './style/index.module.less'
@@ -9,20 +9,38 @@ import useUserStore from '@/store/userStore'
 import { RoleEnum } from '@/@types'
 import table_style from '../style/table.module.less'
 import RecordAdd from '@/views/record/RecordAdd'
+import useBuildStore from '@/store/dormBuildStore'
 
 const records = ref<RecordModel[]>([])
 const loading = ref(false)
+const store = useUserStore()
+const curRole = store.$state.currentRole
 
 const useState = () => {
+  const reqParams = reactive({
+    page: {
+      current: computed(() => pagination.current - 1),
+      pageSize: computed(() => pagination.pageSize)
+    },
+    dormBuildName: null,
+    studentName: null,
+    dormName: null
+  })
+
   async function loadRecords() {
     loading.value = true
-    const { data: res } = await RecordAPI.list({
-      page: {
+    let res
+    if (curRole === RoleEnum.ADMIN || curRole === RoleEnum.DORM_MANAGER) {
+      res = (await RecordAPI.list(reqParams).finally(() => loading.value = false)).data
+    } else if (curRole === RoleEnum.STUDENT) {
+      res = (await RecordAPI.listByStudent({
+        pageSize: pagination.pageSize,
         current: pagination.current - 1,
-        pageSize: pagination.pageSize
-      },
-      dormBuildName: null
-    }).finally(() => loading.value = false)
+        stuNum: store.userInfo.stuNum
+      }).finally(() => loading.value = false)).data
+    } else {
+      return
+    }
     if (res.code !== 200) {
       return message.error('加载失败')
     }
@@ -45,13 +63,13 @@ const useState = () => {
     onChange: async (current, pageSize) => {
       pagination.current = current
       pagination.pageSize = pageSize
-      console.log(records)
       await loadRecords()
     }
   })
   return {
     pagination,
-    loadRecords
+    loadRecords,
+    reqParams
   }
 }
 const useColumns = () => {
@@ -60,12 +78,6 @@ const useColumns = () => {
       title: 'Id',
       key: 'recordId',
       dataIndex: 'recordId',
-      align: 'center'
-    },
-    {
-      title: '学号',
-      key: 'studentNumber',
-      dataIndex: 'studentNumber',
       align: 'center'
     },
     {
@@ -117,13 +129,17 @@ const operate = (role: number): ColumnType => {
     align: 'center',
     customRender: ({ index }) => {
       const changeClick = () => {
-        console.log(records.value)
         // todo
       }
       const deleteClick = () => {
-        console.log(records.value.at(index))
-
-        // todo
+        RecordAPI.delete(records.value[index].recordId)
+          .then(({ data: res }) => {
+            if (res.code === 200) {
+              records.value.splice(index,1)
+              return message.success('删除成功')
+            }
+            return message.error('删除失败')
+          })
       }
       return (
         <>
@@ -155,11 +171,12 @@ const operate = (role: number): ColumnType => {
 export default defineComponent({
   name: 'RecordTableView',
   setup() {
-    const store = useUserStore()
     const role = store.currentRole
-    const { pagination, loadRecords } = useState()
+    const { pagination, loadRecords, reqParams } = useState()
     const { columns } = useColumns()
     const addModalVisible = ref<boolean>(false)
+    const selectionLoading = ref<boolean>(false)
+    const buildStore = useBuildStore()
     if (role >= 1) {
       columns.push(operate(role))
     }
@@ -181,27 +198,48 @@ export default defineComponent({
           v-model:visible={addModalVisible.value}>
           <RecordAdd />
         </Modal>
-        <div class={classes.operate_bar}>
-          {
-            role === RoleEnum.DORM_MANAGER ?
-              <Button class={classes.add_btn} type={'primary'}
-                      onClick={() => addModalVisible.value = true}>
-                添加
-              </Button>
-              :
-              <div />
-          }
-          <div class={classes.search_bar}>
-            <Select style={{ width: '150px' }}>
-              <Select.Option value={1}>学号</Select.Option>
-              <Select.Option value={2}>宿舍楼栋</Select.Option>
-              <Select.Option value={3}>寝室号</Select.Option>
-              <Select.Option value={4}>性别</Select.Option>
-            </Select>
-            <Input />
-            <Button type={'primary'}>查询</Button>
-          </div>
-        </div>
+        {
+          curRole === RoleEnum.STUDENT ?
+            <div />
+            :
+            <div class={classes.operate_bar}>
+              {
+                role === RoleEnum.DORM_MANAGER ?
+                  <Button class={classes.add_btn} type={'primary'}
+                          onClick={() => addModalVisible.value = true}>
+                    添加
+                  </Button>
+                  :
+                  <div />
+              }
+              <div class={classes.search_bar}>
+                <Select
+                  placeholder={'宿舍'}
+                  style={{ 'width': '100px' }}
+                  onMousedown={() => {
+                    selectionLoading.value = true
+                    buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
+                  }}
+                  loading={selectionLoading.value}
+                  v-model:value={reqParams.dormName}
+                >
+                  {buildStore.getDormBuilds.map(dormBuild => {
+                    return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
+                  })}
+                </Select>
+                <Input type={'number'}
+                       style={{ 'width': '120px' }}
+                       placeholder={'宿舍号'}
+                       v-model:value={reqParams.dormBuildName} />
+                <Input
+                  placeholder={'姓名'}
+                  style={{ 'width': '150px' }}
+                  v-model:value={reqParams.studentName} />
+                <Button type={'primary'} onClick={() => loadRecords()}>查询</Button>
+              </div>
+            </div>
+        }
+
         <Table
           customRow={customRow}
           size={'small'}

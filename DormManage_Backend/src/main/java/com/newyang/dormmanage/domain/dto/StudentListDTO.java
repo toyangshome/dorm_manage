@@ -16,5 +16,6 @@ public class StudentListDTO {
     private PageDTO page;
 
     private String dormBuildName;
+    private String dormName;
     private String studentName;
 }

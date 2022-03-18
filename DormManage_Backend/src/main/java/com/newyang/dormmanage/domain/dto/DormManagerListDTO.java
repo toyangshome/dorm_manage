@@ -16,4 +16,6 @@ public class DormManagerListDTO {
     private PageDTO page;
 
     private String name;
+
+    private String dormBuildName;
 }

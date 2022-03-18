@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
+import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { ColumnsType } from 'ant-design-vue/lib/table'
 import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
 import { DormManagerModel } from '@/api/model/user'
@@ -8,6 +8,7 @@ import classes from './style/index.module.less'
 import table_style from '@/views/style/table.module.less'
 import DormBuildAdd from '@/views/dormbuild/DormBuildAdd'
 import DormManagerAdd from '@/views/dormmanager/DormManagerAdd'
+import useBuildStore from '@/store/dormBuildStore'
 
 const dormManagers = ref<DormManagerModel[]>([])
 
@@ -66,8 +67,15 @@ const useColumns = () => {
           console.log(dormManagers.value[index])
         }
         const deleteClick = () => {
-          console.log(dormManagers.value[index])
-          // todo
+          DormManagerAPI
+            .delete(dormManagers.value[index].dormManId)
+            .then(({ data: res }) => {
+              if (res.code === 200) {
+                dormManagers.value.splice(index, 1)
+                return message.success('删除成功')
+              }
+              return message.error('删除失败')
+            })
         }
         return (
           <>
@@ -104,17 +112,23 @@ export default defineComponent({
         await getDormManagerList()
       }
     })
+    const reqParams = reactive({
+      page: {
+        current: computed(() => pagination.current - 1),
+        pageSize: computed(() => pagination.pageSize)
+      },
+      name: null,
+      dormBuildName: null
+    })
+    const buildStore = useBuildStore()
     const addModalVisible = ref<boolean>(false)
+    const selectionLoading = ref<boolean>(false)
     const loading = ref(false)
     const getDormManagerList = async () => {
       loading.value = true
-      const { data: res } = await DormManagerAPI.list({
-        page: {
-          current: pagination.current - 1,
-          pageSize: pagination.pageSize
-        },
-        name: null
-      }).finally(() => loading.value = false)
+      const { data: res } = await DormManagerAPI
+        .list(reqParams)
+        .finally(() => loading.value = false)
       if (res.code != 200) {
         return message.error('加载数据失败!')
       }
@@ -143,15 +157,29 @@ export default defineComponent({
           <DormManagerAdd />
         </Modal>
         <div class={classes.operate_bar}>
-          <Button class={classes.add_btn} type={'primary'} onClick={() => addModalVisible.value = true}>添加</Button>
+          <Button
+            class={classes.add_btn}
+            type={'primary'}
+            onClick={() => addModalVisible.value = true}>
+            添加
+          </Button>
           <div class={classes.search_bar}>
-            <Select style={{ width: '150px' }}>
-              <Select.Option value={1}>1栋</Select.Option>
-              <Select.Option value={2}>2栋</Select.Option>
-              <Select.Option value={3}>3栋</Select.Option>
+            <Select
+              placeholder={'宿舍'}
+              style={{ 'width': '100px' }}
+              onMousedown={() => {
+                selectionLoading.value = true
+                buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
+              }}
+              loading={selectionLoading.value}
+              v-model:value={reqParams.dormBuildName}
+            >
+              {buildStore.getDormBuilds.map(dormBuild => {
+                return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
+              })}
             </Select>
-            <Input />
-            <Button type={'primary'}>查询</Button>
+            <Input placeholder={'姓名'} v-model:value={reqParams.name} />
+            <Button type={'primary'} onClick={() => getDormManagerList()}>查询</Button>
           </div>
         </div>
         <Table

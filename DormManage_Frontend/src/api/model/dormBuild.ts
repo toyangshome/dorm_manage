@@ -1,7 +1,7 @@
 import { Page } from '@/@types'
 
 export interface DormBuildModel {
-  id: number
+  id?: number
   detail?: string
   dormBuildName: string
 }

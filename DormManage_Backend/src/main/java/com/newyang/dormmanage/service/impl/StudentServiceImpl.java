@@ -41,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
                                 .setSex(student.getSex())
                                 .setName(student.getName())
                                 .setStuNum(student.getStuNum())
-                                .setDormBuildId(1)
+                                .setDormBuildName(student.getDormBuild().getDormBuildName())
                                 .setTel(student.getTel())
                         )
                 );

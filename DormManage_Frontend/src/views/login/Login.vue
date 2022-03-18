@@ -46,6 +46,7 @@ import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import useUserStore from '@/store/userStore'
 import { loadRoutes } from '@/router'
+import { assign } from 'lodash'
 
 const store = useUserStore()
 const router = useRouter()
@@ -67,8 +68,7 @@ const login = async () => {
   }
   store.$state.auth = true
   store.$state.currentRole = res.data.role
-  store.$state.userInfo = res.data.useInfo
-  loadRoutes()
+  assign(store.$state.userInfo, res.data.userInfo)
   message.success({ content: '登录成功', key: 'login' })
   await router.push('/')
 }

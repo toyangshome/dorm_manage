@@ -45,6 +45,7 @@ public class LoginVO <T> {
         private String stuNum;
         private String name;
         private int dormBuildId;
+        private String dormBuildName;
         private String dormName;
         private String sex;
         private String tel;

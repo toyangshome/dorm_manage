@@ -3,30 +3,22 @@ import {
   Card,
   Row,
   Col,
-  Tag,
   Form,
   Input,
-  ConfigProvider,
   Select,
-  DatePicker,
   Dropdown,
   Menu,
   Divider,
   Badge,
-  BackTop,
   Carousel,
   Affix,
   Layout,
-  Typography,
   Empty,
   Table,
   Modal,
   Spin,
-  Collapse,
   Alert,
-  Skeleton,
   Pagination,
-  List,
   Drawer,
   Avatar,
   Popover,
@@ -48,28 +40,22 @@ const loadComponent = (app: ReturnType<typeof createApp>): void => {
   app.use(Card)
   app.use(Row)
   app.use(Col)
-  app.use(Tag)
   app.use(Form)
   app.use(Input)
   app.use(Dropdown)
   app.use(Menu)
   app.use(Divider)
   app.use(Select)
-  app.use(DatePicker)
   app.use(Badge)
   app.use(Carousel)
-  app.use(Typography)
   app.use(Layout)
   app.use(Affix)
   app.use(Empty)
   app.use(Table)
   app.use(Modal)
   app.use(Spin)
-  app.use(Collapse)
   app.use(Alert)
-  app.use(Skeleton)
   app.use(Pagination)
-  app.use(List)
   app.use(Drawer)
   app.use(Avatar)
   app.use(Popover)

@@ -4,48 +4,27 @@
       <div class='logo'>
         <img style='height: 36px' src='../../assets/adminLogo.png' alt='' />
       </div>
+      <CurrentUserInfo/>
       <Menu />
     </a-layout-sider>
   </div>
 </template>
 
 <script lang='ts'>
-import {
-  PieChartOutlined,
-  ReadOutlined,
-  FileTextOutlined,
-  LayoutOutlined,
-  SettingOutlined
-} from '@ant-design/icons-vue'
 import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
-import { getMenuRoutes } from '@/router'
+
 import Menu from '@/components/view_struct/Menu'
+import CurrentUserInfo from '@/components/view_struct/CurrentUserInfo'
 
 export default defineComponent({
   name: 'WbuSideNav',
   components: {
-    Menu,
-    PieChartOutlined,
-    ReadOutlined,
-    FileTextOutlined,
-    LayoutOutlined,
-    SettingOutlined
+    CurrentUserInfo,
+    Menu
   },
   setup() {
-    const router = useRouter()
-    const menus = getMenuRoutes()
-    const selectedKeys = ref([])
-    const menuClick = (e: MenuInfo) => {
-      router.push({
-        path: e.key as string
-      })
-    }
     return {
-      menuClick,
-      selectedKeys,
-      menus
+
     }
   }
 })

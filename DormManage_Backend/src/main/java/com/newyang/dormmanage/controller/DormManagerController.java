@@ -4,6 +4,7 @@ import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.domain.dto.DormManagerAddDTO;
 import com.newyang.dormmanage.domain.dto.DormManagerListDTO;
 import com.newyang.dormmanage.domain.dto.DormManagerUpdateDTO;
+import com.newyang.dormmanage.domain.model.DormBuild;
 import com.newyang.dormmanage.domain.model.DormManager;
 import com.newyang.dormmanage.domain.vo.DormManagerListVO;
 import com.newyang.dormmanage.domain.vo.DormManagerVO;
@@ -37,8 +38,13 @@ public class DormManagerController {
     @PostMapping("list")
     public Response<Page<DormManagerListVO>> list (@RequestBody @Validated DormManagerListDTO params) {
         PageRequest pageRequest = PageRequest.of(params.getPage().getCurrent(), params.getPage().getPageSize());
+
         DormManager exampleQuery = new DormManager();
         exampleQuery.setName(params.getName());
+        DormBuild dormBuild = new DormBuild();
+        dormBuild.setDormBuildName(params.getDormBuildName());
+        exampleQuery.setDormBuild(dormBuild);
+
         Page<DormManagerListVO> res = dmService.list(pageRequest, Example.of(exampleQuery));
         return Response.success(res);
     }

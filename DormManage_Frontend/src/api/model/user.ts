@@ -28,10 +28,14 @@ interface StudentModel {
   studentId?: number
   stuNum?: string
   name?: string
-  dormBuildId?: string
+  dormBuildId?: number
+  dormBuildName?: string
   dormName?: string
   sex?: string
   tel?: string
+}
+
+interface CommonUser extends StudentModel, AdminModel, DormManagerModel {
 }
 
 interface LoginResponse<T> {
@@ -44,5 +48,6 @@ export {
   DormManagerModel,
   StudentModel,
   LoginResponse,
-  DormManagerAddParams
+  DormManagerAddParams,
+  CommonUser
 }

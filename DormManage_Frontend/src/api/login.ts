@@ -1,10 +1,11 @@
-import { AdminModel, DormManagerModel, LoginResponse, StudentModel } from '@/api/model/user'
+import { AdminModel, CommonUser, DormManagerModel, LoginResponse, StudentModel } from '@/api/model/user'
 import { HttpResponse } from '@/@types'
 import { webService } from '@/api/axios'
 
 const LoginUrl = {
   LOGIN: 'user/login',
-  GET: 'user/info'
+  GET: 'user/info',
+  QUIT: 'user/quit'
 }
 export const roleMap = {
   0: '学生',
@@ -19,10 +20,13 @@ export interface LoginParams {
 }
 
 export const LoginAPI = {
-  async login(params: LoginParams): Promise<HttpResponse<any>> {
+  async login(params: LoginParams): Promise<HttpResponse<{ userInfo?: CommonUser, role: number }>> {
     return webService.post(LoginUrl.LOGIN, params)
   },
   async getInfo(): Promise<HttpResponse<LoginResponse<any>>> {
     return webService.get(LoginUrl.GET)
+  },
+  async quit(): Promise<HttpResponse<void>> {
+    return webService.get(LoginUrl.QUIT)
   }
 }

@@ -63,7 +63,8 @@ public class DormBuildController {
 
     @PostMapping("delete/{id}")
     public Response<Void> delete (@PathVariable("id") Integer id) {
-        return null;
+        dormBuildService.delete(id);
+        return Response.success();
     }
 
     @PostMapping("update")

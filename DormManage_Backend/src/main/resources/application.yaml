@@ -1,6 +1,10 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 300m
 spring:
+
   jpa:
     database: mysql
     hibernate:

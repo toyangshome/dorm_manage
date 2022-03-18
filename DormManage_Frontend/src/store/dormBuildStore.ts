@@ -2,7 +2,11 @@ import { defineStore } from 'pinia'
 import DormBuildAPI from '@/api/dormBuild'
 
 const defaultState = {
-  dormBuilds: []
+  dormBuilds: [],
+  currentDormBuild: {
+    dormBuildName: '',
+    dormBuildId: 0
+  }
 }
 const useBuildStore = defineStore({
   id: 'dormBuild',

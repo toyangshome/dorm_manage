@@ -12,6 +12,7 @@ const dormManagerApiUrl = {
 export interface DormManagerListParams {
   page: Page
   name?: string
+  dormBuildName?:string
 }
 
 export const DormManagerAPI = {

@@ -15,5 +15,6 @@ public class RecordListDTO {
     @Valid
     private PageDTO page;
     private String dormBuildName;
+    private String dormName;
     private String studentName;
 }
