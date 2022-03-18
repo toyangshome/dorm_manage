@@ -3,6 +3,7 @@ package com.newyang.dormmanage.service;
 import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.domain.model.DormManager;
 import com.newyang.dormmanage.domain.vo.DormManagerListVO;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.jaxb.SpringDataJaxb;
@@ -15,7 +16,7 @@ import org.springframework.data.querydsl.QPageRequest;
  */
 
 public interface DormManagerService {
-    Page<DormManagerListVO> list(PageRequest pageRequest);
+    Page<DormManagerListVO> list(PageRequest pageRequest, Example<DormManager> example);
     void delete(Integer id);
     Response<Void> update(DormManager dormManager);
 }

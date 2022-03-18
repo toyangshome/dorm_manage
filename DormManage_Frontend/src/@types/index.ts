@@ -67,7 +67,25 @@ export interface DataType<T> {
  * Http Json 响应数据格式
  */
 export interface HttpResponse<T> extends AxiosResponse {
-  status: number;
-  statusText: string;
-  data: DataType<T>;
+  status: number
+  statusText: string
+  data: DataType<T>
+}
+
+export interface Page {
+  current: number
+  pageSize: number
+}
+
+export interface PageResponse<T> {
+  content: T[]
+  size?: number
+  number?: number
+  totalPages?: number
+  totalElements?: number
+}
+export enum RoleEnum {
+  STUDENT,
+  DORM_MANAGER,
+  ADMIN,
 }

@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "t_dormbuild")
-@ToString
 public class DormBuild implements Serializable {
 
     @Id

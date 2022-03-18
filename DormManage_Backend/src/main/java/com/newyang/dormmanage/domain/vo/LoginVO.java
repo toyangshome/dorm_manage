@@ -1,5 +1,6 @@
 package com.newyang.dormmanage.domain.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -10,7 +11,13 @@ import lombok.experimental.Accessors;
  * @date 2022/3/16 13:10
  */
 
-public class LoginVO {
+@Data
+@AllArgsConstructor
+public class LoginVO <T> {
+    private T userInfo;
+    private Integer role;
+
+
     @Accessors(chain = true)
     @Data
     public static class Admin {

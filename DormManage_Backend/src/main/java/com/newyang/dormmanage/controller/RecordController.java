@@ -5,6 +5,7 @@ import com.newyang.dormmanage.domain.dto.RecordAddDTO;
 import com.newyang.dormmanage.domain.dto.RecordListDTO;
 import com.newyang.dormmanage.domain.dto.RecordUpdateDTO;
 import com.newyang.dormmanage.domain.model.Record;
+import com.newyang.dormmanage.domain.vo.RecordListVO;
 import com.newyang.dormmanage.service.RecordService;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Example;
@@ -30,7 +31,7 @@ public class RecordController {
     }
 
     @PostMapping("list")
-    public Response<Page<Record>> list (@RequestBody @Validated RecordListDTO params) {
+    public Response<Page<RecordListVO>> list (@RequestBody @Validated RecordListDTO params) {
         // 分页逻辑
         PageRequest pageRequest = PageRequest.of(params.getPage().getCurrent(), params.getPage().getPageSize());
         Record queryExample = new Record();
@@ -39,7 +40,7 @@ public class RecordController {
         queryExample.setStudentName(params.getStudentName());
         Example<Record> example = Example.of(queryExample);
 
-        Page<Record> list = recordService.list(pageRequest, example);
+        Page<RecordListVO> list = recordService.list(pageRequest, example);
         return Response.success(list);
     }
 

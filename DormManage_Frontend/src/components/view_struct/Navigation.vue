@@ -4,33 +4,7 @@
       <div class='logo'>
         <img style='height: 36px' src='../../assets/adminLogo.png' alt='' />
       </div>
-      <a-menu
-        v-model:selectedKeys='selectedKeys'
-        theme='light'
-        mode='inline'
-        @click='menuClick'
-      >
-        <a-menu-item key='/welcome'>
-          <pie-chart-outlined />
-          <span>首页</span>
-        </a-menu-item>
-        <a-menu-item key='/dorm_manager'>
-          <file-text-outlined />
-          <span>宿舍管理员管理</span>
-        </a-menu-item>
-        <a-menu-item key='/student'>
-          <ReadOutlined />
-          <span>学生管理</span>
-        </a-menu-item>
-        <a-menu-item key='/dorm_build'>
-          <layout-outlined />
-          <span>宿舍楼管理</span>
-        </a-menu-item>
-        <a-menu-item key='/record'>
-          <setting-outlined />
-          <span>缺勤记录</span>
-        </a-menu-item>
-      </a-menu>
+      <Menu />
     </a-layout-sider>
   </div>
 </template>
@@ -46,10 +20,13 @@ import {
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
+import { getMenuRoutes } from '@/router'
+import Menu from '@/components/view_struct/Menu'
 
 export default defineComponent({
   name: 'WbuSideNav',
   components: {
+    Menu,
     PieChartOutlined,
     ReadOutlined,
     FileTextOutlined,
@@ -58,6 +35,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const menus = getMenuRoutes()
     const selectedKeys = ref([])
     const menuClick = (e: MenuInfo) => {
       router.push({
@@ -66,7 +44,8 @@ export default defineComponent({
     }
     return {
       menuClick,
-      selectedKeys
+      selectedKeys,
+      menus
     }
   }
 })

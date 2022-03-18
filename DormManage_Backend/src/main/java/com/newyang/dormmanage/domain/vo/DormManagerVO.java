@@ -1,4 +1,4 @@
-package com.newyang.dormmanage.domain.dto;
+package com.newyang.dormmanage.domain.vo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

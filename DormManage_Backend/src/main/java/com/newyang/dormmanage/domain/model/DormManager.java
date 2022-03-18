@@ -1,11 +1,8 @@
 package com.newyang.dormmanage.domain.model;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 
 @Entity
-@ToString
 @Table(name = "t_dormmanager")
 public class DormManager {
     @Id
@@ -19,11 +16,7 @@ public class DormManager {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "dormBuildId")
-    private Integer dormBuildId;
 
-    @Column(name = "dormBuildName")
-    private String dormBuildName;
     @Column(name = "name")
     private String name;
 
@@ -32,6 +25,10 @@ public class DormManager {
 
     @Column(name = "tel")
     private String tel;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "dormBuildId", referencedColumnName = "dormBuildId", insertable = false, updatable = false, nullable = true)
+    private DormBuild dormBuild;
 
     public Integer getId () {
         return dormManId;
@@ -57,20 +54,12 @@ public class DormManager {
         this.password = password;
     }
 
-    public Integer getDormBuildId () {
-        return dormBuildId;
+    public DormBuild getDormBuild () {
+        return dormBuild;
     }
 
-    public void setDormBuildId (Integer dormBuildId) {
-        this.dormBuildId = dormBuildId;
-    }
-
-    public String getDormBuildName () {
-        return dormBuildName;
-    }
-
-    public void setDormBuildName (String dormBuildName) {
-        this.dormBuildName = dormBuildName;
+    public void setDormBuild (DormBuild dormBuild) {
+        this.dormBuild = dormBuild;
     }
 
     public String getName () {

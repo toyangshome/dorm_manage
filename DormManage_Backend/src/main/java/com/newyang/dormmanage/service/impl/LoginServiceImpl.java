@@ -73,8 +73,7 @@ public class LoginServiceImpl implements LoginService {
                         .setSex(dormManager.getSex())
                         .setUserName(dormManager.getUserName())
                         .setTel(dormManager.getTel())
-                        .setDormBuildId(dormManager.getDormBuildId())
-                        .setDormBuildName(dormManager.getDormBuildName())
+                        .setDormBuildName(dormManager.getDormBuild().getDormBuildName())
                 );
             } else {
                 return Response.failure(ResStatus.USER_PASSWORD_ERROR);
@@ -96,7 +95,7 @@ public class LoginServiceImpl implements LoginService {
                         .setName(student.getName())
                         .setSex(student.getSex())
                         .setTel(student.getTel())
-                        .setDormBuildId(student.getDormBuildId())
+                        .setDormBuildId(1)
                         .setDormName(student.getDormName())
                         .setStuNum(student.getStuNum())
                 );

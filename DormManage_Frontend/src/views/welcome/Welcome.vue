@@ -1,11 +1,14 @@
 <template>
 <a-card>
-  <div class='welcome'>欢迎您，系统管理员</div>
+  <div class='welcome'>欢迎您，{{ roleMap[role] }}</div>
 </a-card>
 </template>
 
 <script lang='ts' setup>
-
+import { roleMap } from '@/api/login'
+import useUserStore from '@/store/userStore'
+const store = useUserStore()
+const role = store.currentRole
 </script>
 
 <style lang='scss' scoped>

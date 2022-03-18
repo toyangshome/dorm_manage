@@ -6,6 +6,7 @@ import com.newyang.dormmanage.domain.model.DormManager;
 import com.newyang.dormmanage.domain.vo.DormManagerListVO;
 import com.newyang.dormmanage.service.DormManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,18 +28,17 @@ public class DormManagerServiceImpl implements DormManagerService {
     }
 
     @Override
-    public Page<DormManagerListVO> list (PageRequest pageRequest) {
-        Page<DormManagerListVO> result = dmRepo
-                .findAll(pageRequest)
+    public Page<DormManagerListVO> list (PageRequest pageRequest, Example<DormManager> example) {
+
+        return dmRepo
+                .findAll(example, pageRequest)
                 .map((item) -> new DormManagerListVO()
                         .setDormManId(item.getId())
                         .setSex(item.getSex())
                         .setTel(item.getTel())
-                        .setDormBuildName(item.getDormBuildName())
+                        .setDormBuildName(item.getDormBuild().getDormBuildName())
                         .setUserName(item.getUserName())
                         .setName(item.getName()));
-
-        return result;
     }
 
     @Override
@@ -52,14 +52,12 @@ public class DormManagerServiceImpl implements DormManagerService {
         if (dm.isPresent()) {
             DormManager updateDm = dm.get();
             updateDm.setUserName(dormManager.getUserName());
-            updateDm.setDormBuildName(dormManager.getDormBuildName());
             updateDm.setName(dormManager.getName());
-            updateDm.setDormBuildId(dormManager.getDormBuildId());
             updateDm.setSex(dormManager.getSex());
             updateDm.setTel(dormManager.getTel());
             dmRepo.saveAndFlush(updateDm);
             return Response.success();
         }
-        return Response.failure(-1,"目标不存在");
+        return Response.failure(- 1, "目标不存在");
     }
 }

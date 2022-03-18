@@ -7,7 +7,8 @@ export const webService = axios.create({
   baseURL: baseUrl,
   timeout: 10000,
   timeoutErrorMessage: '请求超时',
-  responseType: 'json'
+  responseType: 'json',
+  withCredentials: true
 })
 /**
  * request 拦截器

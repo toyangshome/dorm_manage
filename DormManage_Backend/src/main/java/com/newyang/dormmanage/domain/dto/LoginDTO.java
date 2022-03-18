@@ -21,7 +21,7 @@ public class LoginDTO {
     private String username;
 
     @NotBlank
-    @Length(min = 3,max = 18)
+    @Length(min = 2,max = 18)
     private String password;
 
     @NotNull

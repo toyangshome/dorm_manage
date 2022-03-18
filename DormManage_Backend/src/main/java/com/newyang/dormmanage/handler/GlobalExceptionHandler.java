@@ -1,5 +1,6 @@
 package com.newyang.dormmanage.handler;
 
+import com.newyang.dormmanage.auth.exception.AuthException;
 import com.newyang.dormmanage.commons.ResStatus;
 import com.newyang.dormmanage.commons.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,11 @@ public class GlobalExceptionHandler {
         log.error("Message Parse Error: ======> {}", e.getMessage());
         return Response.failure(ResStatus.JSON_PARSE_ERROR);
     }
-
+    @ExceptionHandler(AuthException.class)
+    public Response<Void> handler (AuthException e) {
+        log.error("Message Parse Error: ======> {}", e.getMessage());
+        return Response.failure(ResStatus.USER_UNAUTHORIZED);
+    }
     @ExceptionHandler(NullPointerException.class)
     public Response<Void> handler (NullPointerException e) {
         log.error("Null Pointer Error: ======> {}", e.getMessage());

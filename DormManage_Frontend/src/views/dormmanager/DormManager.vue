@@ -1,15 +1,15 @@
 <template>
 <a-card>
-  <TableView></TableView>
+  <DormManagerTableView/>
 </a-card>
 </template>
 
 <script lang='ts'>
-import TableView from '@/views/dormmanager/TableView'
+import DormManagerTableView from '@/views/dormmanager/DormManagerTableView'
 import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
-    TableView
+    DormManagerTableView
   }
 })
 </script>

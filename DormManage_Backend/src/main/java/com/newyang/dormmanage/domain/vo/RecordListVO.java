@@ -25,7 +25,7 @@ public class RecordListVO {
 
     private String studentName;
 
-    private Integer dormBuildId;
+    private String dormBuildName;
 
     private String dormName;
 

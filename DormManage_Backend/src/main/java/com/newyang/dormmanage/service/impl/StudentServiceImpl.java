@@ -34,14 +34,14 @@ public class StudentServiceImpl implements StudentService {
     public Page<StudentListVO> list (PageRequest pageRequest, Example<Student> example) {
 
         return stRepo
-                .findAll(pageRequest)
+                .findAll(example, pageRequest)
                 .map((student -> new StudentListVO()
-                        .setStudentId(student.getId())
-                        .setDormName(student.getDormName())
-                        .setSex(student.getSex())
-                        .setName(student.getName())
-                        .setStuNum(student.getStuNum())
-                        .setDormBuildId(student.getDormBuildId())
+                                .setStudentId(student.getId())
+                                .setDormName(student.getDormName())
+                                .setSex(student.getSex())
+                                .setName(student.getName())
+                                .setStuNum(student.getStuNum())
+                                .setDormBuildId(1)
                                 .setTel(student.getTel())
                         )
                 );

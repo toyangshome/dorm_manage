@@ -6,9 +6,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "t_student")
-@ToString
-
 public class Student {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "studentId")
@@ -23,9 +22,6 @@ public class Student {
     @Column(name = "name", length = 20)
     private String name;
 
-    @Column(name = "dormBuildId")
-    private Integer dormBuildId;
-
     @Column(name = "dormName", length = 11)
     private String dormName;
 
@@ -34,6 +30,19 @@ public class Student {
 
     @Column(name = "tel", length = 15)
     private String tel;
+
+    @OneToOne
+    @JoinColumn(name = "dormBuildId",referencedColumnName = "dormBuildId")
+    private DormBuild dormBuild;
+
+
+    public void setDormBuild (DormBuild dormBuild) {
+        this.dormBuild = dormBuild;
+    }
+
+    public DormBuild getDormBuild () {
+        return dormBuild;
+    }
 
     public String getTel () {
         return tel;
@@ -59,13 +68,14 @@ public class Student {
         this.dormName = dormName;
     }
 
-    public Integer getDormBuildId () {
-        return dormBuildId;
-    }
+//    public Integer getDormBuildId () {
+//        return dormBuildId;
+//    }
+//
+//    public void setDormBuildId (Integer dormBuildId) {
+//        this.dormBuildId = dormBuildId;
+//    }
 
-    public void setDormBuildId (Integer dormBuildId) {
-        this.dormBuildId = dormBuildId;
-    }
 
     public String getName () {
         return name;
@@ -97,5 +107,19 @@ public class Student {
 
     public void setId (Integer id) {
         this.studentId = id;
+    }
+
+    @Override
+    public String toString () {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", stuNum='" + stuNum + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", dormName='" + dormName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", tel='" + tel + '\'' +
+                ", dormBuild=" + dormBuild +
+                '}';
     }
 }

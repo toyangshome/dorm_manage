@@ -42,6 +42,7 @@ public class StudentController {
         exampleQuery.setDormName(params.getDormBuildName());
         exampleQuery.setName(params.getStudentName());
         Example<Student> example = Example.of(exampleQuery);
+
         Page<StudentListVO> queryRes = studentService.list(pageRequest, example);
         return Response.success(queryRes);
     }

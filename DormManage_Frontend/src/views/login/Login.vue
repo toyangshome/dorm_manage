@@ -9,14 +9,14 @@
         Sign In
       </h2>
     </header>
-    <form action='#' class='login__form' method='POST'>
+    <div class='login__form'>
       <div>
         <label for='email'>用户名</label>
-        <input id='email' type='email' :value='loginData.username' placeholder='username'>
+        <input id='email' v-model='loginData.username' type='email' placeholder='username'>
       </div>
       <div>
         <label for='password'>密码</label>
-        <input id='password' type='password' :value='loginData.password' placeholder='password'>
+        <input id='password' v-model='loginData.password' type='password' placeholder='password'>
       </div>
       <div>
         <a-radio-group v-model:value='loginData.role' button-style='solid'>
@@ -27,7 +27,7 @@
       <div>
         <input class='button' value='登录' type='button' @click='login'>
       </div>
-    </form>
+    </div>
   </div>
   <svg xmlns='http://www.w3.org/2000/svg' class='icons'>
     <symbol id='icon-lock' viewBox='0 0 448 512'>
@@ -42,17 +42,35 @@
 <script lang='ts' setup>
 import { reactive, ref } from 'vue'
 import { LoginAPI, LoginParams, roleMap } from '@/api/login'
+import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
+import useUserStore from '@/store/userStore'
+import { loadRoutes } from '@/router'
 
+const store = useUserStore()
+const router = useRouter()
 const loginData = reactive<LoginParams>({
   username: '',
   password: '',
   role: 0
 })
 const login = async () => {
+  message.loading({ content: '登录中', key: 'login' })
   const { data: res } = await LoginAPI.login({
     ...loginData
   })
-
+  if (res.code !== 200) {
+    return message.error({
+      content: res.message,
+      key: 'login'
+    })
+  }
+  store.$state.auth = true
+  store.$state.currentRole = res.data.role
+  store.$state.userInfo = res.data.useInfo
+  loadRoutes()
+  message.success({ content: '登录成功', key: 'login' })
+  await router.push('/')
 }
 </script>
 
@@ -139,7 +157,7 @@ svg {
 }
 
 .login__header {
-  background-color: #f95252;
+  background-color: #52b3f9;
   border-top-left-radius: 1.25em;
   border-top-right-radius: 1.25em;
   color: #fff;
