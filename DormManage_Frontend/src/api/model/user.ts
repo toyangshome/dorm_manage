@@ -6,6 +6,15 @@ interface AdminModel {
   tel?: string
 }
 
+interface DormManagerAddParams {
+  userName?: string
+  dormBuildName?: string
+  password?: string
+  name?: string
+  sex?: string
+  tel?: string
+}
+
 interface DormManagerModel {
   dormManId?: number
   userName?: string
@@ -34,5 +43,6 @@ export {
   AdminModel,
   DormManagerModel,
   StudentModel,
-  LoginResponse
+  LoginResponse,
+  DormManagerAddParams
 }

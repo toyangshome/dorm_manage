@@ -45,7 +45,7 @@ const mainRoutes: Array<RouteRecordRaw> = [
     name: 'DormBuild',
     component: DormBuild,
     meta: {
-      role: 1,
+      role: 2,
       title: '宿舍楼管理',
       icon: 'HomeOutlined',
       show: true

@@ -1,10 +1,10 @@
 import { defineComponent } from 'vue'
 import { Form, Input } from 'ant-design-vue'
-import style from './style/index.module.less'
 
 export default defineComponent({
-  name: 'DormBuildAdd',
+  name: 'RecordAdd',
   setup() {
+
     return () => (
       <>
         <Form labelAlign={'right'} labelCol={{ 'span': 6 }} wrapperCol={{ 'span': 14 }}>

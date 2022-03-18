@@ -1,13 +1,14 @@
 import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { StudentModel } from '@/api/model/user'
 import { ColumnsType, ColumnType } from 'ant-design-vue/es/table'
-import { Button, Input, message, Select, Table } from 'ant-design-vue'
+import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
 import { TablePaginationConfig } from 'ant-design-vue/es'
 import classes from './style/index.module.less'
 import StudentAPI from '@/api/student'
 import table_style from '@/views/style/table.module.less'
 import { RoleEnum } from '@/@types'
 import userStore from '@/store/userStore'
+import RecordAdd from '@/views/record/RecordAdd'
 
 const data = reactive<StudentModel[]>([])
 const loading = ref(false)
@@ -158,6 +159,7 @@ export default defineComponent({
     const { pagination, loadStudents } = useState()
     const { columns } = useColumns()
     const role = store.$state.currentRole
+    const addModalVisible = ref<boolean>(false)
     onBeforeMount(async () => {
       await loadStudents()
     })
@@ -171,9 +173,22 @@ export default defineComponent({
     }
     return () => (
       <>
+        <Modal
+          footer={null}
+          width={400}
+          centered
+          closable={true}
+          v-model:visible={addModalVisible.value}>
+          <RecordAdd />
+        </Modal>
         <div class={classes.operate_bar}>
           {role === RoleEnum.ADMIN ?
-            <Button class={classes.add_btn} type={'primary'}>添加</Button>
+            <Button
+              class={classes.add_btn}
+              type={'primary'}
+              onClick={() => addModalVisible.value = true}>
+              添加
+            </Button>
             :
             <div />
           }

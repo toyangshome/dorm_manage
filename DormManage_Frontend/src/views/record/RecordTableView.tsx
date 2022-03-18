@@ -1,6 +1,6 @@
 import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { ColumnsType, ColumnType } from 'ant-design-vue/es/table'
-import { Button, Input, message, Select, Table } from 'ant-design-vue'
+import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
 import classes from './style/index.module.less'
 import { TablePaginationConfig } from 'ant-design-vue/es'
 import { RecordModel } from '@/api/model/record'
@@ -8,6 +8,7 @@ import RecordAPI from '@/api/record'
 import useUserStore from '@/store/userStore'
 import { RoleEnum } from '@/@types'
 import table_style from '../style/table.module.less'
+import RecordAdd from '@/views/record/RecordAdd'
 
 const records = ref<RecordModel[]>([])
 const loading = ref(false)
@@ -158,6 +159,7 @@ export default defineComponent({
     const role = store.currentRole
     const { pagination, loadRecords } = useState()
     const { columns } = useColumns()
+    const addModalVisible = ref<boolean>(false)
     if (role >= 1) {
       columns.push(operate(role))
     }
@@ -171,10 +173,23 @@ export default defineComponent({
     }
     return () => (
       <>
+        <Modal
+          width={400}
+          centered
+          closable={true}
+          footer={null}
+          v-model:visible={addModalVisible.value}>
+          <RecordAdd />
+        </Modal>
         <div class={classes.operate_bar}>
           {
             role === RoleEnum.DORM_MANAGER ?
-              <Button class={classes.add_btn} type={'primary'}>添加</Button> : <div />
+              <Button class={classes.add_btn} type={'primary'}
+                      onClick={() => addModalVisible.value = true}>
+                添加
+              </Button>
+              :
+              <div />
           }
           <div class={classes.search_bar}>
             <Select style={{ width: '150px' }}>

@@ -6,7 +6,8 @@ const dormBuildAPIUrl = {
   list: 'dorm_build/list',
   delete: 'dorm_build/delete',
   update: 'dorm_build/update',
-  add: 'dorm_build/add'
+  add: 'dorm_build/add',
+  all: 'dorm_build/all_build'
 }
 
 
@@ -23,6 +24,9 @@ const DormBuildAPI = {
   },
   async add(params: DormBuildModel): Promise<HttpResponse<void>> {
     return webService.post(dormBuildAPIUrl.add, params)
+  },
+  async listAll(): Promise<HttpResponse<DormBuildModel[]>> {
+    return webService.get(dormBuildAPIUrl.all)
   }
 }
 

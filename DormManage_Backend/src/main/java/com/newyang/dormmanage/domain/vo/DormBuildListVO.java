@@ -13,5 +13,4 @@ import lombok.experimental.Accessors;
 public class DormBuildListVO {
     private Integer dormBuildId;
     private String dormBuildName;
-    private String dormBuildDetail;
 }

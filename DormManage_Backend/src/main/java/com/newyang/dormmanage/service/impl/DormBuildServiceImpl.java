@@ -4,6 +4,7 @@ import com.newyang.dormmanage.commons.ResStatus;
 import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.dao.DormBuildRepository;
 import com.newyang.dormmanage.domain.model.DormBuild;
+import com.newyang.dormmanage.domain.vo.DormBuildListVO;
 import com.newyang.dormmanage.service.DormBuildService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author NewYang
@@ -32,6 +35,17 @@ public class DormBuildServiceImpl implements DormBuildService {
     @Override
     public Page<DormBuild> list (PageRequest pageRequest, Example<DormBuild> example) {
         return dmbRepo.findAll(example, pageRequest);
+    }
+
+    @Override
+    public List<DormBuildListVO> listAll () {
+        return dmbRepo
+                .findAll()
+                .stream()
+                .map(item -> new DormBuildListVO()
+                        .setDormBuildId(item.getId())
+                        .setDormBuildName(item.getDormBuildName()))
+                .collect(Collectors.toList());
     }
 
     @Override

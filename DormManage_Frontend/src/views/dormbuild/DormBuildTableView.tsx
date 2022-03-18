@@ -1,11 +1,12 @@
 import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { DormBuildModel } from '@/api/model/dormBuild'
 import { ColumnsType } from 'ant-design-vue/es/table'
-import { Button, Input, message, Select, Table } from 'ant-design-vue'
+import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
 import classes from './style/index.module.less'
 import { TablePaginationConfig } from 'ant-design-vue/es'
 import DormBuildAPI from '@/api/dormBuild'
 import table_style from '@/views/style/table.module.less'
+import DormBuildAdd from '@/views/dormbuild/DormBuildAdd'
 
 const dormBuilds = ref<DormBuildModel[]>([])
 const loading = ref(false)
@@ -109,9 +110,13 @@ export default defineComponent({
   setup() {
     const { pagination, loadDormBuilds } = useState()
     const { columns } = useColumns()
+    const addModalVisible = ref<boolean>(false)
     onBeforeMount(async () => {
       await loadDormBuilds()
     })
+    const showAddModal = () => {
+      addModalVisible.value = true
+    }
     const customRow = () => {
       return {
         class: table_style.record_table
@@ -119,8 +124,16 @@ export default defineComponent({
     }
     return () => (
       <>
+        <Modal
+          width={400}
+          centered
+          closable={true}
+          footer={null}
+          v-model:visible={addModalVisible.value}>
+          <DormBuildAdd />
+        </Modal>
         <div class={classes.operate_bar}>
-          <Button class={classes.add_btn} type={'primary'}>添加</Button>
+          <Button class={classes.add_btn} type={'primary'} onClick={showAddModal}>添加</Button>
           <div class={classes.search_bar}>
             <Input placeholder={'宿舍名称'} />
             <Button type={'primary'}>查询</Button>

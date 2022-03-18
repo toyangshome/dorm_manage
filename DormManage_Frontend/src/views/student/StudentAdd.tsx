@@ -1,9 +1,8 @@
 import { defineComponent } from 'vue'
 import { Form, Input } from 'ant-design-vue'
-import style from './style/index.module.less'
 
 export default defineComponent({
-  name: 'DormBuildAdd',
+  name: 'StudentAdd',
   setup() {
     return () => (
       <>

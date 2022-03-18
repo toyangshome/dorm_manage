@@ -5,6 +5,7 @@ import com.newyang.dormmanage.domain.dto.DormBuildAddDTO;
 import com.newyang.dormmanage.domain.dto.DormBuildListDTO;
 import com.newyang.dormmanage.domain.dto.DormBuildUpdateDTO;
 import com.newyang.dormmanage.domain.model.DormBuild;
+import com.newyang.dormmanage.domain.vo.DormBuildListVO;
 import com.newyang.dormmanage.service.DormBuildService;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Example;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author NewYang
@@ -41,6 +44,11 @@ public class DormBuildController {
         Example<DormBuild> example = Example.of(exampleQuery);
         Page<DormBuild> list = dormBuildService.list(pageRequest, example);
         return Response.success(list);
+    }
+
+    @GetMapping("all_build")
+    public Response<List<DormBuildListVO>> listAll () {
+        return Response.success(dormBuildService.listAll());
     }
 
     @PostMapping("add")

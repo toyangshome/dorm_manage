@@ -1,11 +1,13 @@
 import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { ColumnsType } from 'ant-design-vue/lib/table'
-import { Button, Input, message, Select, Table } from 'ant-design-vue'
+import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
 import { DormManagerModel } from '@/api/model/user'
 import { DormManagerAPI } from '@/api/dormManager'
 import { TablePaginationConfig } from 'ant-design-vue/es'
 import classes from './style/index.module.less'
 import table_style from '@/views/style/table.module.less'
+import DormBuildAdd from '@/views/dormbuild/DormBuildAdd'
+import DormManagerAdd from '@/views/dormmanager/DormManagerAdd'
 
 const dormManagers = ref<DormManagerModel[]>([])
 
@@ -102,6 +104,7 @@ export default defineComponent({
         await getDormManagerList()
       }
     })
+    const addModalVisible = ref<boolean>(false)
     const loading = ref(false)
     const getDormManagerList = async () => {
       loading.value = true
@@ -130,8 +133,17 @@ export default defineComponent({
     }
     return () =>
       <div>
+        <Modal
+          width={400}
+          centered
+          closable={true}
+          footer={null}
+          destroyOnClose={true}
+          v-model:visible={addModalVisible.value}>
+          <DormManagerAdd />
+        </Modal>
         <div class={classes.operate_bar}>
-          <Button class={classes.add_btn} type={'primary'}>添加</Button>
+          <Button class={classes.add_btn} type={'primary'} onClick={() => addModalVisible.value = true}>添加</Button>
           <div class={classes.search_bar}>
             <Select style={{ width: '150px' }}>
               <Select.Option value={1}>1栋</Select.Option>
