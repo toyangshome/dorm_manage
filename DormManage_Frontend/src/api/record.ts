@@ -1,6 +1,6 @@
 import { HttpResponse, PageResponse } from '@/@types'
 import { webService } from '@/api/axios'
-import { RecordListParams, RecordModel, RecordUpdateParams } from '@/api/model/record'
+import { RecordAddParams, RecordListParams, RecordModel, RecordUpdateParams } from '@/api/model/record'
 import exp from 'constants'
 
 const recordAPIUrl = {
@@ -26,7 +26,7 @@ const RecordAPI = {
     return webService.post(recordAPIUrl.delete + '/' + id)
 
   },
-  async add(params: RecordModel): Promise<HttpResponse<void>> {
+  async add(params: RecordAddParams): Promise<HttpResponse<void>> {
     return webService.post(recordAPIUrl.add, params)
   }
 }

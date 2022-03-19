@@ -33,6 +33,7 @@ const useUserStore = defineStore({
   },
   actions: {
     async loadUser() {
+      this.reset()
       console.log('loading info...')
       const { data: res } = await LoginAPI.getInfo()
       if (res.code !== 200) {

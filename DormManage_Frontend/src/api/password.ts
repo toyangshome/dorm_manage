@@ -7,6 +7,7 @@ const passwordAPIUrl = {
 
 export interface ChangePasswordParams {
   id: number
+  role: number
   newPassword: string
   oldPassword: string
 }

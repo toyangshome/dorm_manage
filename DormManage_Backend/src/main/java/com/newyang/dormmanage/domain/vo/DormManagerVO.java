@@ -1,5 +1,6 @@
 package com.newyang.dormmanage.domain.vo;
 
+import com.newyang.dormmanage.domain.model.DormManager;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,4 +13,11 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class DormManagerVO {
+    private Integer dormManId;
+    private String userName;
+    private String dormBuildName;
+    private Integer dormBuildId;
+    private String name;
+    private String sex;
+    private String tel;
 }

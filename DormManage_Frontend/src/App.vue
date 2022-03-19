@@ -5,11 +5,13 @@
 </template>
 <script lang='ts' setup>
 import { nextTick, provide, ref } from 'vue'
+
 const isRouterAlive = ref<boolean>(true)
 const reload = () => {
   isRouterAlive.value = false
   nextTick(() => {
-    isRouterAlive.value = true
+    location.reload()
+    console.log('reload....')
   })
 }
 provide('reload', reload)

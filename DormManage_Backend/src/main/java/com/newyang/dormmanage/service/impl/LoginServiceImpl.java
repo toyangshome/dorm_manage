@@ -3,6 +3,7 @@ package com.newyang.dormmanage.service.impl;
 import com.newyang.dormmanage.commons.ResStatus;
 import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.dao.AdminRepository;
+import com.newyang.dormmanage.dao.DormBuildRepository;
 import com.newyang.dormmanage.dao.DormManagerRepository;
 import com.newyang.dormmanage.dao.StudentRepository;
 import com.newyang.dormmanage.domain.model.Admin;
@@ -27,14 +28,17 @@ public class LoginServiceImpl implements LoginService {
     private final AdminRepository adminRepository;
     private final StudentRepository studentRepository;
     private final DormManagerRepository dormManagerRepository;
+    private final DormBuildRepository dormBuildRepository;
 
     @Autowired
     public LoginServiceImpl (AdminRepository adminRepository,
                              StudentRepository studentRepository,
-                             DormManagerRepository dormManagerRepository) {
+                             DormManagerRepository dormManagerRepository,
+                             DormBuildRepository dormBuildRepository) {
         this.adminRepository = adminRepository;
         this.studentRepository = studentRepository;
         this.dormManagerRepository = dormManagerRepository;
+        this.dormBuildRepository = dormBuildRepository;
     }
 
     @Override
@@ -73,7 +77,8 @@ public class LoginServiceImpl implements LoginService {
                         .setSex(dormManager.getSex())
                         .setUserName(dormManager.getUserName())
                         .setTel(dormManager.getTel())
-                        .setDormBuildName(dormManager.getDormBuild().getDormBuildName())
+                        .setDormBuildName(dormBuildRepository.queryDormBuildName(dormManager.getDormBuildId()))
+                        .setDormBuildId(dormManager.getDormBuildId())
                 );
             } else {
                 return Response.failure(ResStatus.USER_PASSWORD_ERROR);
@@ -95,8 +100,8 @@ public class LoginServiceImpl implements LoginService {
                         .setName(student.getName())
                         .setSex(student.getSex())
                         .setTel(student.getTel())
-                        .setDormBuildId(student.getDormBuild().getId())
-                        .setDormBuildName(student.getDormBuild().getDormBuildName())
+                        .setDormBuildId(student.getDormBuildId())
+                        .setDormBuildName(dormBuildRepository.queryDormBuildName(student.getDormBuildId()))
                         .setDormName(student.getDormName())
                         .setStuNum(student.getStuNum())
                 );

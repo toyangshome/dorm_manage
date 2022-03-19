@@ -17,11 +17,11 @@ export interface StudentUpdateParams {
 
 
 export interface StudentAddParams {
-  dormBuild: string
-  dormName: string
-  name: string
-  password: string
+  dormBuildId?: number
+  dormName?: string
+  name?: string
+  password?: string
   sex?: string
-  stuNum: string
-  tel: string
+  stuNum?: string
+  tel?: string
 }

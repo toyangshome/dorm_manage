@@ -17,5 +17,5 @@ public class DormManagerListDTO {
 
     private String name;
 
-    private String dormBuildName;
+    private Integer dormBuildId;
 }

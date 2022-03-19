@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studentId")
     private Integer studentId;
 
@@ -30,18 +30,15 @@ public class Student {
 
     @Column(name = "tel", length = 15)
     private String tel;
+    @Column(name= "dormBuildId")
+    private Integer dormBuildId;
 
-    @OneToOne
-    @JoinColumn(name = "dormBuildId",referencedColumnName = "dormBuildId")
-    private DormBuild dormBuild;
-
-
-    public void setDormBuild (DormBuild dormBuild) {
-        this.dormBuild = dormBuild;
+    public Integer getDormBuildId () {
+        return dormBuildId;
     }
 
-    public DormBuild getDormBuild () {
-        return dormBuild;
+    public void setDormBuildId (Integer dormBuildId) {
+        this.dormBuildId = dormBuildId;
     }
 
     public String getTel () {
@@ -67,15 +64,6 @@ public class Student {
     public void setDormName (String dormName) {
         this.dormName = dormName;
     }
-
-//    public Integer getDormBuildId () {
-//        return dormBuildId;
-//    }
-//
-//    public void setDormBuildId (Integer dormBuildId) {
-//        this.dormBuildId = dormBuildId;
-//    }
-
 
     public String getName () {
         return name;
@@ -109,17 +97,4 @@ public class Student {
         this.studentId = id;
     }
 
-    @Override
-    public String toString () {
-        return "Student{" +
-                "studentId=" + studentId +
-                ", stuNum='" + stuNum + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", dormName='" + dormName + '\'' +
-                ", sex='" + sex + '\'' +
-                ", tel='" + tel + '\'' +
-                ", dormBuild=" + dormBuild +
-                '}';
-    }
 }

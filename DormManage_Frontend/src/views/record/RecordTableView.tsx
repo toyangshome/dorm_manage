@@ -10,12 +10,16 @@ import { RoleEnum } from '@/@types'
 import table_style from '../style/table.module.less'
 import RecordAdd from '@/views/record/RecordAdd'
 import useBuildStore from '@/store/dormBuildStore'
+import RecordUpdate from '@/views/record/RecordUpdate'
 
 const records = ref<RecordModel[]>([])
 const loading = ref(false)
 const store = useUserStore()
 const curRole = store.$state.currentRole
-
+const addModalVisible = ref<boolean>(false)
+const selectionLoading = ref<boolean>(false)
+const updateModalVisible = ref<boolean>(false)
+const updateRecord = ref<RecordModel>()
 const useState = () => {
   const reqParams = reactive({
     page: {
@@ -23,6 +27,7 @@ const useState = () => {
       pageSize: computed(() => pagination.pageSize)
     },
     dormBuildName: null,
+    dormBuildId: curRole === RoleEnum.DORM_MANAGER ? store.$state.userInfo.dormBuildId : null,
     studentName: null,
     dormName: null
   })
@@ -129,13 +134,14 @@ const operate = (role: number): ColumnType => {
     align: 'center',
     customRender: ({ index }) => {
       const changeClick = () => {
-        // todo
+        updateRecord.value = records.value[index]
+        updateModalVisible.value = true
       }
       const deleteClick = () => {
         RecordAPI.delete(records.value[index].recordId)
           .then(({ data: res }) => {
             if (res.code === 200) {
-              records.value.splice(index,1)
+              records.value.splice(index, 1)
               return message.success('删除成功')
             }
             return message.error('删除失败')
@@ -174,8 +180,6 @@ export default defineComponent({
     const role = store.currentRole
     const { pagination, loadRecords, reqParams } = useState()
     const { columns } = useColumns()
-    const addModalVisible = ref<boolean>(false)
-    const selectionLoading = ref<boolean>(false)
     const buildStore = useBuildStore()
     if (role >= 1) {
       columns.push(operate(role))
@@ -191,12 +195,30 @@ export default defineComponent({
     return () => (
       <>
         <Modal
+          destroyOnClose={true}
+          width={400}
+          centered
+          closable={true}
+          footer={null}
+          v-model:visible={updateModalVisible.value}
+        >
+          <RecordUpdate
+            record={updateRecord.value}
+            onUpdateSuccess={() => {
+              updateModalVisible.value = false
+              loadRecords()
+            }} />
+        </Modal>
+        <Modal
           width={400}
           centered
           closable={true}
           footer={null}
           v-model:visible={addModalVisible.value}>
-          <RecordAdd />
+          <RecordAdd onAddSuccess={() => {
+            addModalVisible.value = false
+            loadRecords()
+          }} />
         </Modal>
         {
           curRole === RoleEnum.STUDENT ?
@@ -213,24 +235,29 @@ export default defineComponent({
                   <div />
               }
               <div class={classes.search_bar}>
-                <Select
-                  placeholder={'宿舍'}
-                  style={{ 'width': '100px' }}
-                  onMousedown={() => {
-                    selectionLoading.value = true
-                    buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
-                  }}
-                  loading={selectionLoading.value}
-                  v-model:value={reqParams.dormName}
-                >
-                  {buildStore.getDormBuilds.map(dormBuild => {
-                    return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
-                  })}
-                </Select>
-                <Input type={'number'}
-                       style={{ 'width': '120px' }}
-                       placeholder={'宿舍号'}
-                       v-model:value={reqParams.dormBuildName} />
+                {
+                  curRole === RoleEnum.ADMIN ?
+                    <Select
+                      placeholder={'宿舍'}
+                      style={{ 'width': '100px' }}
+                      onMousedown={() => {
+                        selectionLoading.value = true
+                        buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
+                      }}
+                      loading={selectionLoading.value}
+                      v-model:value={reqParams.dormBuildId}
+                    >
+                      {buildStore.getDormBuilds.map(dormBuild => {
+                        return <Select.Option value={dormBuild.dormBuildId}>{dormBuild.dormBuildName}</Select.Option>
+                      })}
+                    </Select>
+                    : <div />
+                }
+
+                <Input
+                  style={{ 'width': '120px' }}
+                  placeholder={'宿舍号'}
+                  v-model:value={reqParams.dormName} />
                 <Input
                   placeholder={'姓名'}
                   style={{ 'width': '150px' }}

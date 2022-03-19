@@ -1,6 +1,11 @@
 package com.newyang.dormmanage.domain.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author NewYang
@@ -10,4 +15,12 @@ import lombok.Data;
 
 @Data
 public class RecordUpdateDTO {
+    @NotNull
+    private Integer recordId;
+    @NotNull
+    private String studentNumber;
+    @NotNull
+    private LocalDate date;
+    @Length(max = 200)
+    private String detail;
 }

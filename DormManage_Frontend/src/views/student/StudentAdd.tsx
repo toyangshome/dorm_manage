@@ -1,8 +1,8 @@
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { Button, Form, FormInstance, Input, message, Radio, Select } from 'ant-design-vue'
-import { DormManagerAddParams } from '@/api/model/user'
 import useBuildStore from '@/store/dormBuildStore'
-import { DormManagerAPI } from '@/api/dormManager'
+import StudentAPI from '@/api/student'
+import { StudentAddParams } from '@/api/model/student'
 
 const rules = {
   name: [
@@ -56,13 +56,6 @@ const rules = {
       message: '不能含有空格'
     }
   ],
-  dormBuildName: [
-    {
-      required: true,
-      trigger: 'blur',
-      message: '不能为空'
-    }
-  ],
   tel: [
     {
       trigger: 'blur',
@@ -73,23 +66,26 @@ const rules = {
 }
 export default defineComponent({
   name: 'StudentAdd',
-  setup() {
+  emits: ['addSuccess'],
+  setup(props, { emit }) {
     const formRef = ref<FormInstance>()
-    const addModel = reactive<DormManagerAddParams>({
+    const addModel = reactive<StudentAddParams>({
       name: '',
-      dormBuildName: '',
+      dormBuildId: null,
       password: '',
       sex: '男',
-      tel: ''
+      tel: '',
+      stuNum: ''
     })
     const optionsLoading = ref<boolean>(false)
     const dormBuildStore = useBuildStore()
     const dormBuildList = computed(() => dormBuildStore.$state.dormBuilds)
     const addSubmit = async () => {
-      const { data: res } = await DormManagerAPI.add(addModel)
+      const { data: res } = await StudentAPI.add(addModel)
       if (res.code !== 200) {
         return message.error(res.message)
       }
+      emit('addSuccess', res.data)
       return message.success('添加成功')
     }
     return () => (
@@ -101,8 +97,11 @@ export default defineComponent({
           labelAlign={'right'}
           labelCol={{ 'span': 6 }}
           wrapperCol={{ 'span': 14 }}>
-          <Form.Item hasFeedback label={'用户名'} name={'userName'}>
-            <Input v-model:value={addModel.userName} />
+          <Form.Item hasFeedback label={'用户名'} name={'name'}>
+            <Input v-model:value={addModel.name} />
+          </Form.Item>
+          <Form.Item hasFeedback label={'学号'} name={'stuNum'}>
+            <Input v-model:value={addModel.stuNum} />
           </Form.Item>
           <Form.Item hasFeedback label={'密码'} name={'password'}>
             <Input type={'password'} v-model:value={addModel.password} />
@@ -114,15 +113,15 @@ export default defineComponent({
                 dormBuildStore.loadDormBuilds().finally(() => optionsLoading.value = false)
               }}
               loading={optionsLoading.value}
-              v-model:value={addModel.dormBuildName}
+              v-model:value={addModel.dormBuildId}
             >
               {dormBuildList.value.map(dormBuild => {
-                return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
+                return <Select.Option value={dormBuild.dormBuildId}>{dormBuild.dormBuildName}</Select.Option>
               })}
             </Select>
           </Form.Item>
-          <Form.Item hasFeedback label={'姓名'} name={'name'}>
-            <Input v-model:value={addModel.name} />
+          <Form.Item hasFeedback label={'宿舍号'} name={'dormName'}>
+            <Input v-model:value={addModel.dormName} />
           </Form.Item>
           <Form.Item label={'性别'} name={'sex'}>
             <Radio.Group v-model:value={addModel.sex}>
@@ -135,10 +134,10 @@ export default defineComponent({
             </Radio.Group>
           </Form.Item>
           <Form.Item label={'电话号码'} name={'tel'}>
-            <Input type={'tel'}  v-model:value={addModel.tel} />
+            <Input type={'tel'} v-model:value={addModel.tel} />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 14, offset: 7 }}>
-            <Button type={'primary'} onClick-Prevent={addSubmit}>添加</Button>
+            <Button type={'primary'} onClick={addSubmit}>添加</Button>
             <Button style={{ 'margin-left': '10px' }} htmlType={'reset'}>重置</Button>
           </Form.Item>
         </Form>

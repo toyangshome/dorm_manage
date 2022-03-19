@@ -1,6 +1,7 @@
 package com.newyang.dormmanage.service;
 
 import com.newyang.dormmanage.commons.Response;
+import com.newyang.dormmanage.domain.dto.StudentAddDTO;
 import com.newyang.dormmanage.domain.dto.StudentUpdateDTO;
 import com.newyang.dormmanage.domain.model.Student;
 import com.newyang.dormmanage.domain.vo.StudentListVO;
@@ -15,4 +16,6 @@ public interface StudentService {
     void delete (Integer studentId);
 
     Response<StudentVO> update (StudentUpdateDTO student);
+
+    Response<StudentVO> add (StudentAddDTO params);
 }

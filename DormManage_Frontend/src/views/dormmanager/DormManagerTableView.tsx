@@ -9,9 +9,15 @@ import table_style from '@/views/style/table.module.less'
 import DormBuildAdd from '@/views/dormbuild/DormBuildAdd'
 import DormManagerAdd from '@/views/dormmanager/DormManagerAdd'
 import useBuildStore from '@/store/dormBuildStore'
+import DormManagerUpdate from '@/views/dormmanager/DormManagerUpdate'
 
 const dormManagers = ref<DormManagerModel[]>([])
-
+const updateDormManager =ref<DormManagerModel>()
+const updateModalVisible = ref(false)
+const buildStore = useBuildStore()
+const addModalVisible = ref<boolean>(false)
+const selectionLoading = ref<boolean>(false)
+const loading = ref(false)
 
 const useColumns = () => {
   const columns: ColumnsType<DormManagerModel> = [
@@ -64,7 +70,9 @@ const useColumns = () => {
       align: 'center',
       customRender: ({ index }) => {
         const changeClick = () => {
-          console.log(dormManagers.value[index])
+          updateDormManager.value = dormManagers.value[index]
+          console.log(updateDormManager.value)
+          updateModalVisible.value = true
         }
         const deleteClick = () => {
           DormManagerAPI
@@ -118,12 +126,9 @@ export default defineComponent({
         pageSize: computed(() => pagination.pageSize)
       },
       name: null,
-      dormBuildName: null
+      dormBuildId: null
     })
-    const buildStore = useBuildStore()
-    const addModalVisible = ref<boolean>(false)
-    const selectionLoading = ref<boolean>(false)
-    const loading = ref(false)
+
     const getDormManagerList = async () => {
       loading.value = true
       const { data: res } = await DormManagerAPI
@@ -153,8 +158,31 @@ export default defineComponent({
           closable={true}
           footer={null}
           destroyOnClose={true}
+          v-model:visible={updateModalVisible.value}>
+          <DormManagerUpdate
+            dormManager={updateDormManager.value}
+            onUpdateSuccess={() => {
+              getDormManagerList()
+              updateModalVisible.value = false
+            }
+            }
+          />
+        </Modal>
+        <Modal
+          width={400}
+          centered
+          closable={true}
+          footer={null}
+          destroyOnClose={true}
           v-model:visible={addModalVisible.value}>
-          <DormManagerAdd />
+          <DormManagerAdd
+            onAddSuccess={() => {
+              getDormManagerList()
+              addModalVisible.value = false
+            }
+            }
+          />
+
         </Modal>
         <div class={classes.operate_bar}>
           <Button
@@ -172,10 +200,13 @@ export default defineComponent({
                 buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
               }}
               loading={selectionLoading.value}
-              v-model:value={reqParams.dormBuildName}
+              v-model:value={reqParams.dormBuildId}
             >
+              <Select.Option value={null}>
+                全部
+              </Select.Option>
               {buildStore.getDormBuilds.map(dormBuild => {
-                return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
+                return <Select.Option value={dormBuild.dormBuildId}>{dormBuild.dormBuildName}</Select.Option>
               })}
             </Select>
             <Input placeholder={'姓名'} v-model:value={reqParams.name} />

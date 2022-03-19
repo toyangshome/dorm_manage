@@ -1,13 +1,14 @@
 package com.newyang.dormmanage.service;
 
 import com.newyang.dormmanage.commons.Response;
+import com.newyang.dormmanage.domain.dto.DormManagerAddDTO;
+import com.newyang.dormmanage.domain.dto.DormManagerUpdateDTO;
 import com.newyang.dormmanage.domain.model.DormManager;
 import com.newyang.dormmanage.domain.vo.DormManagerListVO;
+import com.newyang.dormmanage.domain.vo.DormManagerVO;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
-import org.springframework.data.querydsl.QPageRequest;
 
 /**
  * @author NewYang
@@ -18,5 +19,7 @@ import org.springframework.data.querydsl.QPageRequest;
 public interface DormManagerService {
     Page<DormManagerListVO> list(PageRequest pageRequest, Example<DormManager> example);
     void delete(Integer id);
-    Response<Void> update(DormManager dormManager);
+    Response<DormManagerVO> update(DormManagerUpdateDTO dormManager);
+
+    Response<DormManagerVO> add (DormManagerAddDTO params);
 }

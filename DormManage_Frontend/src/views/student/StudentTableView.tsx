@@ -8,13 +8,25 @@ import StudentAPI from '@/api/student'
 import table_style from '@/views/style/table.module.less'
 import { RoleEnum } from '@/@types'
 import userStore from '@/store/userStore'
-import RecordAdd from '@/views/record/RecordAdd'
 import useBuildStore from '@/store/dormBuildStore'
 import StudentAdd from '@/views/student/StudentAdd'
+import { RecordAddParams } from '@/api/model/record'
+import RecordAPI from '@/api/record'
+import StudentUpdate from '@/views/student/StudentUpdate'
 
 const data = reactive<StudentModel[]>([])
+const updateStudent = ref<StudentModel>()
 const loading = ref(false)
 const recordAddModalVisible = ref<boolean>(false)
+const updateModalVisible = ref<boolean>(false)
+const store = userStore()
+const role = store.$state.currentRole
+const addRecordParams = reactive<RecordAddParams>({
+  detail: '',
+  studentNumber: '',
+  dormBuildId: null
+})
+
 
 const useState = () => {
   const reqParams = reactive({
@@ -22,10 +34,11 @@ const useState = () => {
       current: computed(() => pagination.current - 1),
       pageSize: computed(() => pagination.pageSize)
     },
-    dormBuildName: null,
+    dormBuildId: role === RoleEnum.DORM_MANAGER ? store.$state.userInfo.dormBuildId : null,
     studentName: null,
     dormName: null
   })
+
 
   async function loadStudents() {
     loading.value = true
@@ -113,8 +126,8 @@ const operate = (role: number): ColumnType => {
     align: 'center',
     customRender: ({ index }) => {
       const changeClick = () => {
-        console.log(data)
-        // todo
+        updateStudent.value = data[index]
+        updateModalVisible.value = true
       }
       const deleteClick = () => {
         StudentAPI.delete(data[index].studentId)
@@ -127,7 +140,12 @@ const operate = (role: number): ColumnType => {
           })
       }
       const addClick = () => {
+        // open modal
         recordAddModalVisible.value = true
+        // init add params
+        addRecordParams.studentNumber = data[index].stuNum
+        addRecordParams.dormBuildId = data[index].dormBuildId
+        // submit will in modal submit event,not current function
       }
       let opt
       if (role === RoleEnum.ADMIN) {
@@ -165,14 +183,21 @@ const operate = (role: number): ColumnType => {
 }
 export default defineComponent({
   name: 'StudentTableView',
+  components: {
+    StudentUpdate
+  },
   setup() {
-    const store = userStore()
     const { pagination, loadStudents, reqParams } = useState()
     const { columns } = useColumns()
-    const role = store.$state.currentRole
     const addModalVisible = ref<boolean>(false)
     const selectionLoading = ref<boolean>(false)
     const buildStore = useBuildStore()
+    const addRecord = () => {
+      RecordAPI.add(addRecordParams).then(() => {
+        message.success('添加成功')
+        recordAddModalVisible.value = false
+      })
+    }
     onBeforeMount(async () => {
       await loadStudents()
     })
@@ -191,8 +216,27 @@ export default defineComponent({
           width={400}
           centered
           closable={true}
+          v-model:visible={updateModalVisible.value}>
+          <StudentUpdate
+            student={updateStudent.value}
+            onUpdateSuccess={() => {
+              updateModalVisible.value = false
+              loadStudents()
+            }}
+          />
+        </Modal>
+        <Modal
+          footer={null}
+          width={400}
+          centered
+          closable={true}
           v-model:visible={addModalVisible.value}>
-          <StudentAdd />
+          <StudentAdd
+            onAddSuccess={() => {
+              addModalVisible.value = false
+              loadStudents()
+            }}
+          />
         </Modal>
         <Modal
           footer={null}
@@ -200,7 +244,9 @@ export default defineComponent({
           centered
           closable={true}
           v-model:visible={recordAddModalVisible.value}>
-          <RecordAdd />
+          <Input.TextArea v-model:value={addRecordParams.detail} placeholder={'备注'} style={{ 'margin-top': '20px' }}
+          />
+          <Button type={'primary'} onClick={addRecord}>提交</Button>
         </Modal>
         <div class={classes.operate_bar}>
           {
@@ -210,24 +256,32 @@ export default defineComponent({
               <div />
           }
           <div class={classes.search_bar}>
-            <Select
-              placeholder={'宿舍'}
-              style={{ 'width': '100px' }}
-              onMousedown={() => {
-                selectionLoading.value = true
-                buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
-              }}
-              loading={selectionLoading.value}
-              v-model:value={reqParams.dormBuildName}
-            >
-              {buildStore.getDormBuilds.map(dormBuild => {
-                return <Select.Option value={dormBuild.dormBuildName}>{dormBuild.dormBuildName}</Select.Option>
-              })}
-            </Select>
-            <Input type={'number'}
-                   style={{ 'width': '120px' }}
-                   placeholder={'宿舍号'}
-                   v-model:value={reqParams.dormName} />
+            {
+              role === RoleEnum.ADMIN ?
+                <Select
+                  placeholder={'宿舍'}
+                  style={{ 'width': '100px' }}
+                  onMousedown={() => {
+                    selectionLoading.value = true
+                    buildStore.loadDormBuilds().finally(() => selectionLoading.value = false)
+                  }}
+                  loading={selectionLoading.value}
+                  v-model:value={reqParams.dormBuildId}
+                >
+                  <Select.Option value={null}>
+                    全部
+                  </Select.Option>
+                  {buildStore.getDormBuilds.map(dormBuild => {
+                    return <Select.Option value={dormBuild.dormBuildId}>{dormBuild.dormBuildName}</Select.Option>
+                  })}
+                </Select>
+                :
+                <div />
+            }
+            <Input
+              style={{ 'width': '120px' }}
+              placeholder={'宿舍号'}
+              v-model:value={reqParams.dormName} />
             <Input
               placeholder={'姓名'}
               style={{ 'width': '150px' }}

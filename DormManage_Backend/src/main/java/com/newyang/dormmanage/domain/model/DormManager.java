@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "t_dormmanager")
 public class DormManager {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dormManId", nullable = false)
     private Integer dormManId;
 
@@ -25,9 +25,8 @@ public class DormManager {
     @Column(name = "tel")
     private String tel;
 
-    @ManyToOne
-    @JoinColumn(name = "dormBuildId", referencedColumnName = "dormBuildId", insertable = false, updatable = false)
-    private DormBuild dormBuild;
+    @Column(name = "dormBuildId")
+    private Integer dormBuildId;
 
     public Integer getId () {
         return dormManId;
@@ -53,12 +52,12 @@ public class DormManager {
         this.password = password;
     }
 
-    public DormBuild getDormBuild () {
-        return dormBuild;
+    public Integer getDormBuildId () {
+        return dormBuildId;
     }
 
-    public void setDormBuild (DormBuild dormBuild) {
-        this.dormBuild = dormBuild;
+    public void setDormBuildId (Integer dormBuildId) {
+        this.dormBuildId = dormBuildId;
     }
 
     public String getName () {

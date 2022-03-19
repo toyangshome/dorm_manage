@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Table(name = "t_record")
 public class Record {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recordId", nullable = false)
     private Integer recordId;
 
@@ -28,9 +28,8 @@ public class Record {
     @Column(name = "detail", length = 50)
     private String detail;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "dormBuildId", referencedColumnName = "dormBuildId", insertable = false, updatable = false, nullable = true)
-    private DormBuild dormBuild;
+    @Column(name = "dormBuildId")
+    private Integer dormBuildId;
 
     public String getDetail () {
         return detail;
@@ -56,12 +55,12 @@ public class Record {
         this.dormName = dormName;
     }
 
-    public DormBuild getDormBuild () {
-        return dormBuild;
+    public Integer getDormBuildId () {
+        return dormBuildId;
     }
 
-    public void setDormBuild (DormBuild dormBuild) {
-        this.dormBuild = dormBuild;
+    public void setDormBuildId (Integer dormBuildId) {
+        this.dormBuildId = dormBuildId;
     }
 
     public String getStudentName () {

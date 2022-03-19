@@ -12,17 +12,20 @@ const dormManagerApiUrl = {
 export interface DormManagerListParams {
   page: Page
   name?: string
-  dormBuildName?:string
+  dormBuildName?: string
 }
 
 export const DormManagerAPI = {
   async list(params: DormManagerListParams): Promise<HttpResponse<PageResponse<DormManagerModel>>> {
     return webService.post(dormManagerApiUrl.list, params)
   },
-  async add(params: DormManagerAddParams): Promise<HttpResponse<void>> {
+  async add(params: DormManagerAddParams): Promise<HttpResponse<DormManagerModel>> {
     return webService.post(dormManagerApiUrl.add, params)
   },
   async delete(dormManagerId: number): Promise<HttpResponse<void>> {
     return webService.get(dormManagerApiUrl.delete + '/' + dormManagerId)
+  },
+  async update(params: DormManagerModel): Promise<HttpResponse<DormManagerModel>> {
+    return webService.post(dormManagerApiUrl.update, params)
   }
 }

@@ -27,6 +27,8 @@ public class RecordListVO {
 
     private String dormBuildName;
 
+    private Integer dormBuildId;
+
     private String dormName;
 
     private LocalDate date;

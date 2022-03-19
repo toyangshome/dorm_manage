@@ -3,8 +3,11 @@ package com.newyang.dormmanage.service.impl;
 import com.newyang.dormmanage.commons.ResStatus;
 import com.newyang.dormmanage.commons.Response;
 import com.newyang.dormmanage.dao.DormBuildRepository;
+import com.newyang.dormmanage.dao.DormManagerRepository;
 import com.newyang.dormmanage.domain.model.DormBuild;
+import com.newyang.dormmanage.domain.model.DormManager;
 import com.newyang.dormmanage.domain.vo.DormBuildListVO;
+import com.newyang.dormmanage.domain.vo.DormManagerListVO;
 import com.newyang.dormmanage.service.DormBuildService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +29,13 @@ import java.util.stream.Collectors;
 @Service
 public class DormBuildServiceImpl implements DormBuildService {
     private final DormBuildRepository dmbRepo;
+    private final DormManagerRepository dormManagerRepo;
 
     @Autowired
-    public DormBuildServiceImpl (DormBuildRepository dormBuildRepository) {
+    public DormBuildServiceImpl (DormBuildRepository dormBuildRepository,
+                                 DormManagerRepository dormManagerRepository) {
         this.dmbRepo = dormBuildRepository;
+        this.dormManagerRepo = dormManagerRepository;
     }
 
     @Override
@@ -63,5 +69,48 @@ public class DormBuildServiceImpl implements DormBuildService {
             dmbRepo.saveAndFlush(dormBuild);
         }
         return Response.failure(ResStatus.USER_NOT_EXIST);
+    }
+
+    @Override
+    public DormBuild add (String dormBuildName, String detail) {
+        DormBuild queryParams = new DormBuild();
+        queryParams.setDormBuildName(dormBuildName);
+        dmbRepo.findOne(Example.of(queryParams)).ifPresent((item) -> {
+            throw new RuntimeException("已存在该楼栋");
+        });
+        DormBuild saveDormBuild = new DormBuild();
+        saveDormBuild.setDormBuildName(dormBuildName);
+        saveDormBuild.setDetail(detail);
+        return dmbRepo.saveAndFlush(saveDormBuild);
+    }
+
+    @Override
+    public Response<List<DormManagerListVO>> manager (Integer dormBuildId) {
+        DormManager queryParams = new DormManager();
+        queryParams.setDormBuildId(dormBuildId);
+        List<DormManagerListVO> res = dormManagerRepo.findAll(Example.of(queryParams)).stream().map(item -> new DormManagerListVO()
+                .setDormManId(item.getId())
+                .setSex(item.getSex())
+                .setTel(item.getTel())
+                .setDormBuildName(dmbRepo.queryDormBuildName(item.getDormBuildId()))
+                .setUserName(item.getUserName())
+                .setDormBuildId(item.getDormBuildId())
+                .setName(item.getName())).collect(Collectors.toList());
+        if (! res.isEmpty()) {
+            return Response.success(res);
+        }
+        return Response.failure(- 1, "该栋楼没有管理员");
+    }
+
+    @Override
+    public Response<DormBuild> update (Integer id, String dormBuildName, String detail) {
+        Optional<DormBuild> res = dmbRepo.findById(id);
+        if (res.isPresent()) {
+            DormBuild dormBuild = res.get();
+            dormBuild.setDormBuildName(dormBuildName);
+            dormBuild.setDetail(detail);
+            return Response.success(dmbRepo.saveAndFlush(dormBuild));
+        }
+        return Response.failure(- 1, "没有该楼栋");
     }
 }

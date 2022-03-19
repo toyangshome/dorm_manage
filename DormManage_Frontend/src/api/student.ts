@@ -15,14 +15,14 @@ const StudentAPI = {
   async list(params: StudentListParams): Promise<HttpResponse<PageResponse<StudentModel>>> {
     return webService.post(studentAPIUrl.list, params)
   },
-  async update(params: StudentUpdateParams): Promise<HttpResponse<StudentModel>> {
+  async update(params: StudentModel): Promise<HttpResponse<StudentModel>> {
     return webService.post(studentAPIUrl.update, params)
   },
   async delete(id: number): Promise<HttpResponse<void>> {
     return webService.post(studentAPIUrl.delete + '/' + id)
 
   },
-  async add(params: StudentAddParams): Promise<HttpResponse<void>> {
+  async add(params: StudentAddParams): Promise<HttpResponse<StudentModel>> {
     return webService.post(studentAPIUrl.add, params)
   }
 }

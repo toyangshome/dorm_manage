@@ -15,11 +15,11 @@ export default defineComponent({
           {() => {
             if (userStore.currentRole === RoleEnum.ADMIN) {
               const userInfo = userStore.userInfo as AdminModel
-              return <div>当前为系统管理员: {userInfo.name} </div>
+              return <div>系统管理员: {userInfo.name} </div>
             } else if (userStore.currentRole === RoleEnum.DORM_MANAGER) {
               const userInfo = userStore.userInfo as DormManagerModel
               return <div>
-                <p> 当前为宿舍管理员: {userInfo.name}</p>
+                <p> 宿舍管理员: {userInfo.name}</p>
                 <p> 管理楼栋: {userInfo.dormBuildName}</p>
               </div>
             } else {

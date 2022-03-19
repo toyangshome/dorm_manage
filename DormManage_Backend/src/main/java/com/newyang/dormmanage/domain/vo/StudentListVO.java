@@ -26,6 +26,8 @@ public class StudentListVO {
 
     private String dormBuildName;
 
+    private Integer dormBuildId;
+
     private String dormName;
 
     private String sex;

@@ -65,8 +65,8 @@ export default defineComponent({
     const reload = inject('reload') as () => any
     const logout = () => {
       LoginAPI.quit().then(() => {
-        userStore.reset()
         router.push('/login').then(() => {
+          userStore.loadUser()
           reload()
         })
       })

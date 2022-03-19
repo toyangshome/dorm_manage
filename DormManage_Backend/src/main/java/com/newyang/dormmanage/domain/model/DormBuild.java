@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class DormBuild implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dormBuildId")
     private Integer dormBuildId;
     @Column(name = "dormBuildName")

@@ -6,6 +6,7 @@ import com.newyang.dormmanage.domain.dto.DormBuildListDTO;
 import com.newyang.dormmanage.domain.dto.DormBuildUpdateDTO;
 import com.newyang.dormmanage.domain.model.DormBuild;
 import com.newyang.dormmanage.domain.vo.DormBuildListVO;
+import com.newyang.dormmanage.domain.vo.DormManagerListVO;
 import com.newyang.dormmanage.service.DormBuildService;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Example;
@@ -51,13 +52,18 @@ public class DormBuildController {
         return Response.success(dormBuildService.listAll());
     }
 
+    @GetMapping("check_manager/{dormBuildId}")
+    public Response<List<DormManagerListVO>> checkManager (@PathVariable("dormBuildId") Integer dormBuildId) {
+        return dormBuildService.manager(dormBuildId);
+    }
+
     @PostMapping("add")
     public Response<Void> add (
             @RequestBody
             @Validated
                     DormBuildAddDTO params
     ) {
-
+        dormBuildService.add(params.getDormBuildName(), params.getDetail());
         return Response.success();
     }
 
@@ -73,7 +79,7 @@ public class DormBuildController {
             @Validated
                     DormBuildUpdateDTO params
     ) {
-        return null;
+        return dormBuildService.update(params.getId(), params.getDormBuildName(), params.getDetail());
     }
 
 }

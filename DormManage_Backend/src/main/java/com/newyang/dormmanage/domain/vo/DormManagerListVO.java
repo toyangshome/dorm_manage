@@ -16,6 +16,7 @@ public class DormManagerListVO {
     private Integer dormManId;
     private String userName;
     private String dormBuildName;
+    private Integer dormBuildId;
     private String name;
     private String sex;
     private String tel;

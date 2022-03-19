@@ -8,7 +8,7 @@ interface AdminModel {
 
 interface DormManagerAddParams {
   userName?: string
-  dormBuildName?: string
+  dormBuildId?: number
   password?: string
   name?: string
   sex?: string
@@ -18,6 +18,7 @@ interface DormManagerAddParams {
 interface DormManagerModel {
   dormManId?: number
   userName?: string
+  dormBuildId?: number
   dormBuildName?: string
   name?: string
   sex?: string

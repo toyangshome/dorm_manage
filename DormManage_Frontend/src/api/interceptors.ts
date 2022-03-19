@@ -5,12 +5,27 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import TokenUtils from '@/utils/token'
 import ProjectConfig from '@/config'
 import { HttpResponse, HttpStatusCode } from '@/@types'
-import router  from '@/router'
+import router from '@/router'
+import { filterEmpty } from 'ant-design-vue/es/_util/props-util'
+import { forIn } from 'lodash'
 // config
 const isTest = false
 // 根据全局配置文件抽离出来的条件
 const testToken = ProjectConfig.token.testToken
 const tokenName = ProjectConfig.token.tokenName
+
+/**
+ * 过滤参数中的空字符串，将其转化为 null
+ * @param params
+ */
+function filterEmptyParams(params) {
+  forIn(params, (value, key, object) => {
+    if (value === '') {
+      object[key] = null
+    }
+  })
+}
+
 /**
  * @description 请求拦截器，处理 token 挂载等功能
  * request 拦截器
@@ -29,6 +44,7 @@ export const requestInterceptor = {
     if (isExists) {
       request.headers[tokenName] = token
     }
+    filterEmptyParams(request.data)
     return request
   },
   onRejected: (e: any): any => {

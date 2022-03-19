@@ -11,6 +11,7 @@ import com.newyang.dormmanage.domain.model.Student;
 import com.newyang.dormmanage.service.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 /**
@@ -38,11 +39,12 @@ public class PasswordServiceImpl implements PasswordService {
     public Response<Void> admin (Integer id, String newPwd, String oldPwd) {
         Optional<Admin> res = adminRepository.findById(id);
         if (res.isPresent()) {
-            if (!oldPwd.equals(res.get().getPassword())) {
+            if (! oldPwd.equals(res.get().getPassword())) {
                 return Response.failure(ResStatus.USER_PASSWORD_ERROR);
             } else {
                 res.get().setPassword(newPwd);
                 adminRepository.saveAndFlush(res.get());
+                return Response.success();
             }
         }
         return Response.failure(ResStatus.USER_NOT_EXIST);
@@ -52,11 +54,13 @@ public class PasswordServiceImpl implements PasswordService {
     public Response<Void> student (Integer id, String newPwd, String oldPwd) {
         Optional<Student> res = studentRepository.findById(id);
         if (res.isPresent()) {
-            if (!oldPwd.equals(res.get().getPassword())) {
+            if (! oldPwd.equals(res.get().getPassword())) {
                 return Response.failure(ResStatus.USER_PASSWORD_ERROR);
             } else {
                 res.get().setPassword(newPwd);
                 studentRepository.saveAndFlush(res.get());
+                return Response.success();
+
             }
         }
         return Response.failure(ResStatus.USER_NOT_EXIST);
@@ -66,11 +70,12 @@ public class PasswordServiceImpl implements PasswordService {
     public Response<Void> dormManager (Integer id, String newPwd, String oldPwd) {
         Optional<DormManager> res = dormManagerRepository.findById(id);
         if (res.isPresent()) {
-            if (!oldPwd.equals(res.get().getPassword())) {
+            if (! oldPwd.equals(res.get().getPassword())) {
                 return Response.failure(ResStatus.USER_PASSWORD_ERROR);
             } else {
                 res.get().setPassword(newPwd);
                 dormManagerRepository.saveAndFlush(res.get());
+                return Response.success();
             }
         }
         return Response.failure(ResStatus.USER_NOT_EXIST);

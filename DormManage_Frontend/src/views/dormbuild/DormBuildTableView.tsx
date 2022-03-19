@@ -1,16 +1,18 @@
 import { computed, defineComponent, onBeforeMount, reactive, ref } from 'vue'
 import { DormBuildModel } from '@/api/model/dormBuild'
 import { ColumnsType } from 'ant-design-vue/es/table'
-import { Button, Input, message, Modal, Select, Table } from 'ant-design-vue'
+import { Button, Input, List, message, Modal, Select, Table } from 'ant-design-vue'
 import classes from './style/index.module.less'
 import { TablePaginationConfig } from 'ant-design-vue/es'
 import DormBuildAPI from '@/api/dormBuild'
 import table_style from '@/views/style/table.module.less'
 import DormBuildAdd from '@/views/dormbuild/DormBuildAdd'
+import DormBuildUpdate from '@/views/dormbuild/DormBuildUpdate'
 
 const dormBuilds = ref<DormBuildModel[]>([])
 const loading = ref(false)
-
+const updateModalVisible = ref(false)
+const updateDormBuild = ref<DormBuildModel>()
 const useState = () => {
   const reqParams = reactive({
     page: {
@@ -82,8 +84,9 @@ const useColumns = () => {
       align: 'center',
       customRender: ({ index }) => {
         const changeClick = () => {
-          console.log(dormBuilds.value)
-          // todo
+          updateDormBuild.value = dormBuilds.value[index]
+          console.log(updateDormBuild.value)
+          updateModalVisible.value = true
         }
         const deleteClick = () => {
           DormBuildAPI
@@ -97,7 +100,32 @@ const useColumns = () => {
             })
         }
         const checkManager = () => {
-
+          DormBuildAPI.checkManager(dormBuilds.value[index].id)
+            .then(({ data: res }) => {
+              if (res.code === 200) {
+                return Modal.success({
+                  icon: null,
+                  content: () => <List
+                    bordered
+                    style={{
+                      'background-color': '#5cb7f35c',
+                      'border-radius': '0.5em'
+                    }
+                    }
+                    itemLayout={'horizontal'}
+                    dataSource={res.data}
+                    renderItem={({ item, index }) => {
+                      return <List.Item>
+                        {index + 1}: {item.userName} - {item.name}
+                      </List.Item>
+                    }
+                    }
+                  >
+                  </List>
+                })
+              }
+              return message.warn(res.message)
+            })
         }
         return (
           <>
@@ -138,8 +166,26 @@ export default defineComponent({
           centered
           closable={true}
           footer={null}
+          destroyOnClose={true}
+          v-model:visible={updateModalVisible.value}
+        >
+          <DormBuildUpdate
+            dormBuild={updateDormBuild.value}
+            onUpdateSuccess={() => {
+              updateModalVisible.value = false
+              loadDormBuilds()
+            }} />
+        </Modal>
+        <Modal
+          width={400}
+          centered
+          closable={true}
+          footer={null}
           v-model:visible={addModalVisible.value}>
-          <DormBuildAdd />
+          <DormBuildAdd onAddSuccess={() => {
+            addModalVisible.value = false
+            loadDormBuilds()
+          }} />
         </Modal>
         <div class={classes.operate_bar}>
           <Button class={classes.add_btn} type={'primary'} onClick={showAddModal}>添加</Button>

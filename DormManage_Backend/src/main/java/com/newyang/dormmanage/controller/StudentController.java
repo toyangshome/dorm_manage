@@ -5,7 +5,6 @@ import com.newyang.dormmanage.domain.dto.PageDTO;
 import com.newyang.dormmanage.domain.dto.StudentAddDTO;
 import com.newyang.dormmanage.domain.dto.StudentListDTO;
 import com.newyang.dormmanage.domain.dto.StudentUpdateDTO;
-import com.newyang.dormmanage.domain.model.DormBuild;
 import com.newyang.dormmanage.domain.model.Student;
 import com.newyang.dormmanage.domain.vo.StudentListVO;
 import com.newyang.dormmanage.domain.vo.StudentVO;
@@ -40,15 +39,14 @@ public class StudentController {
         // 查询分页
         PageDTO page = params.getPage();
         PageRequest pageRequest = PageRequest.of(page.getCurrent(), page.getPageSize());
+
         // 条件过滤
         Student exampleQuery = new Student();
-        // 宿舍号过滤
+
+        // 宿舍号
         exampleQuery.setDormName(params.getDormName());
-        // 宿舍楼过滤
-        DormBuild dormBuild = new DormBuild();
-        dormBuild.setDormBuildName(params.getDormBuildName());
-        exampleQuery.setDormBuild(dormBuild);
-        // 姓名过滤
+        exampleQuery.setDormBuildId(params.getDormBuildId());
+        // 姓名
         exampleQuery.setName(params.getStudentName());
         Example<Student> example = Example.of(exampleQuery);
 
@@ -63,12 +61,17 @@ public class StudentController {
     }
 
     @PostMapping("update")
-    public Response<StudentVO> update (@RequestBody @Validated StudentUpdateDTO params) {
+    public Response<StudentVO> update (
+            @RequestBody @Validated
+                    StudentUpdateDTO params) {
+
         return studentService.update(params);
     }
 
     @PostMapping("add")
-    public Response<Void> add (@RequestBody @Validated StudentAddDTO params) {
-        return Response.success();
+    public Response<StudentVO> add (
+            @RequestBody @Validated
+                    StudentAddDTO params) {
+        return studentService.add(params);
     }
 }

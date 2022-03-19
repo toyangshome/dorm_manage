@@ -3,6 +3,7 @@ import { Button, Form, FormInstance, Input, message } from 'ant-design-vue'
 
 import { DormManagerAPI } from '@/api/dormManager'
 import { DormBuildModel } from '@/api/model/dormBuild'
+import DormBuildAPI from '@/api/dormBuild'
 
 const rules = {
   dormBuildName: [
@@ -21,17 +22,19 @@ const rules = {
 }
 export default defineComponent({
   name: 'DormBuildAdd',
-  setup() {
+  emits: ['addSuccess'],
+  setup(props, { emit }) {
     const formRef = ref<FormInstance>()
     const addModel = reactive<DormBuildModel>({
       dormBuildName: '',
       detail: ''
     })
     const addSubmit = async () => {
-      const { data: res } = await DormManagerAPI.add(addModel)
+      const { data: res } = await DormBuildAPI.add(addModel)
       if (res.code !== 200) {
         return message.error(res.message)
       }
+      emit('addSuccess', res.data)
       return message.success('添加成功')
     }
     return () => (
@@ -50,7 +53,7 @@ export default defineComponent({
             <Input.TextArea v-model:value={addModel.detail} />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 14, offset: 7 }}>
-            <Button type={'primary'} onClick-Prevent={addSubmit}>添加</Button>
+            <Button type={'primary'} onClick={addSubmit}>添加</Button>
             <Button style={{ 'margin-left': '10px' }} htmlType={'reset'}>重置</Button>
           </Form.Item>
         </Form>

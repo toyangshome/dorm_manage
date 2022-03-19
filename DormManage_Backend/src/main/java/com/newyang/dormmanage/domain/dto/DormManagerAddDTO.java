@@ -1,6 +1,9 @@
 package com.newyang.dormmanage.domain.dto;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author NewYang
@@ -10,4 +13,27 @@ import lombok.Data;
 
 @Data
 public class DormManagerAddDTO {
+    @NotNull
+    @Length(max = 15)
+    private String userName;
+
+    @NotNull
+    @Length(max = 15)
+    private String password;
+
+    @NotNull
+    private Integer dormBuildId;
+
+    @NotNull
+    @Length(max = 10)
+    private String name;
+
+    @NotNull
+    @Length(max = 1)
+    private String sex;
+
+    @Length(max = 11)
+    private String tel;
+
+
 }
