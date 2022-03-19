@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build -mode production",
     "preview": "vite preview",
     "lint": "eslint . --ext js,ts,vue",
     "lint:fix": "eslint . --fix --ext js,vue,ts"
@@ -13,7 +13,6 @@
     "ant-design-vue": "^3.0.0-beta.7",
     "axios": "^0.21.1",
     "dayjs": "^1.11.0",
-    "echarts": "^5.2.1",
     "lodash": "^4.17.21",
     "pinia": "^2.0.12",
     "pinia-plugin-persist": "0.0.93",

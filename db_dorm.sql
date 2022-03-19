@@ -1,131 +1,159 @@
 /*
-SQLyog 企业版 - MySQL GUI v8.14 
-MySQL - 6.0.11-alpha-community : Database - db_dorm
-*********************************************************************
-*/
+ Navicat Premium Data Transfer
 
-/*!40101 SET NAMES utf8 */;
+ Source Server         : 本地数据库
+ Source Server Type    : MySQL
+ Source Server Version : 80017
+ Source Host           : localhost:3306
+ Source Schema         : db_dorm
 
-/*!40101 SET SQL_MODE=''*/;
+ Target Server Type    : MySQL
+ Target Server Version : 80017
+ File Encoding         : 65001
 
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_dorm` /*!40100 DEFAULT CHARACTER SET utf8 */;
+ Date: 20/03/2022 00:21:06
+*/
 
-USE `db_dorm`;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-/*Table structure for table `t_admin` */
-
+-- ----------------------------
+-- Table structure for t_admin
+-- ----------------------------
 DROP TABLE IF EXISTS `t_admin`;
-
-CREATE TABLE `t_admin` (
+CREATE TABLE `t_admin`  (
   `adminId` int(11) NOT NULL AUTO_INCREMENT,
-  `userName` varchar(20) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `name` varchar(20) DEFAULT NULL,
-  `sex` varchar(10) DEFAULT NULL,
-  `tel` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`adminId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `userName` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sex` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `tel` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`adminId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-/*Data for the table `t_admin` */
+-- ----------------------------
+-- Records of t_admin
+-- ----------------------------
+INSERT INTO `t_admin` VALUES (1, 'admin', '123', 'Lero', '男', '123');
 
-insert  into `t_admin`(`adminId`,`userName`,`password`,`name`,`sex`,`tel`) values (1,'admin','111','Lero','男','123');
-
-/*Table structure for table `t_dorm` */
-
+-- ----------------------------
+-- Table structure for t_dorm
+-- ----------------------------
 DROP TABLE IF EXISTS `t_dorm`;
-
-CREATE TABLE `t_dorm` (
+CREATE TABLE `t_dorm`  (
   `dormId` int(11) NOT NULL AUTO_INCREMENT,
-  `dormBuildId` int(11) DEFAULT NULL,
-  `dormName` varchar(20) DEFAULT NULL,
-  `dormType` varchar(20) DEFAULT NULL,
-  `dormNumber` int(11) DEFAULT NULL,
-  `dormTel` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`dormId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `dormBuildId` int(11) NULL DEFAULT NULL,
+  `dormName` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dormType` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dormNumber` int(11) NULL DEFAULT NULL,
+  `dormTel` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`dormId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-/*Data for the table `t_dorm` */
+-- ----------------------------
+-- Records of t_dorm
+-- ----------------------------
+INSERT INTO `t_dorm` VALUES (1, 1, '220', '男', 6, '110');
 
-insert  into `t_dorm`(`dormId`,`dormBuildId`,`dormName`,`dormType`,`dormNumber`,`dormTel`) values (1,1,'220','男',6,'110');
-
-/*Table structure for table `t_dormbuild` */
-
+-- ----------------------------
+-- Table structure for t_dormbuild
+-- ----------------------------
 DROP TABLE IF EXISTS `t_dormbuild`;
-
-CREATE TABLE `t_dormbuild` (
+CREATE TABLE `t_dormbuild`  (
   `dormBuildId` int(11) NOT NULL AUTO_INCREMENT,
-  `dormBuildName` varchar(20) DEFAULT NULL,
-  `dormBuildDetail` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`dormBuildId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `dormBuildName` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dormBuildDetail` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`dormBuildId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-/*Data for the table `t_dormbuild` */
+-- ----------------------------
+-- Records of t_dormbuild
+-- ----------------------------
+INSERT INTO `t_dormbuild` VALUES (1, '1栋', '这是一栋。。。');
+INSERT INTO `t_dormbuild` VALUES (4, '2栋', '这是3栋');
+INSERT INTO `t_dormbuild` VALUES (5, '3栋', '飞洒地方');
+INSERT INTO `t_dormbuild` VALUES (6, '4栋', '这是4栋');
+INSERT INTO `t_dormbuild` VALUES (9, '10栋', '阿迪斯发');
 
-insert  into `t_dormbuild`(`dormBuildId`,`dormBuildName`,`dormBuildDetail`) values (1,'1栋','这是一栋。。。'),(4,'2栋','这是2栋'),(5,'3栋',''),(6,'4栋',''),(7,'5栋',''),(8,'6栋','');
-
-/*Table structure for table `t_dormmanager` */
-
+-- ----------------------------
+-- Table structure for t_dormmanager
+-- ----------------------------
 DROP TABLE IF EXISTS `t_dormmanager`;
-
-CREATE TABLE `t_dormmanager` (
+CREATE TABLE `t_dormmanager`  (
   `dormManId` int(11) NOT NULL AUTO_INCREMENT,
-  `userName` varchar(20) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `dormBuildId` int(11) DEFAULT NULL,
-  `name` varchar(20) DEFAULT NULL,
-  `sex` varchar(20) DEFAULT NULL,
-  `tel` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`dormManId`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  `userName` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dormBuildId` int(11) NULL DEFAULT NULL,
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sex` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `tel` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`dormManId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-/*Data for the table `t_dormmanager` */
+-- ----------------------------
+-- Records of t_dormmanager
+-- ----------------------------
+INSERT INTO `t_dormmanager` VALUES (2, 'manager2', '123', 4, '小张', '男', '123');
+INSERT INTO `t_dormmanager` VALUES (3, 'manager3', '123', 1, '小李', '女', '123');
+INSERT INTO `t_dormmanager` VALUES (4, 'manager4', '123', 5, '小陈', '男', '123');
+INSERT INTO `t_dormmanager` VALUES (5, 'manager5', '123', 1, '小宋', '男', '123');
+INSERT INTO `t_dormmanager` VALUES (7, 'manager6', '123', 4, '呵呵 ', '女', '123');
+INSERT INTO `t_dormmanager` VALUES (8, 'manager1', '123', 6, '小白', '男', '123');
+INSERT INTO `t_dormmanager` VALUES (9, 'manager7', '123', 1, '哈哈', '女', '123');
+INSERT INTO `t_dormmanager` VALUES (10, 'manager10', '123', 9, '喝了咯', '男', '17683994234');
 
-insert  into `t_dormmanager`(`dormManId`,`userName`,`password`,`dormBuildId`,`name`,`sex`,`tel`) values (2,'manager2','123',4,'小张','男','123'),(3,'manager3','123',1,'小李','女','123'),(4,'manager4','123',5,'小陈','男','123'),(5,'manager5','123',NULL,'小宋','男','123'),(7,'manager6','123',NULL,'呵呵 ','女','123'),(8,'manager1','123',6,'小白','男','123'),(9,'manager7','123',7,'哈哈','女','123');
-
-/*Table structure for table `t_record` */
-
+-- ----------------------------
+-- Table structure for t_record
+-- ----------------------------
 DROP TABLE IF EXISTS `t_record`;
-
-CREATE TABLE `t_record` (
+CREATE TABLE `t_record`  (
   `recordId` int(11) NOT NULL AUTO_INCREMENT,
-  `studentNumber` varchar(20) DEFAULT NULL,
-  `studentName` varchar(30) DEFAULT NULL,
-  `dormBuildId` int(11) DEFAULT NULL,
-  `dormName` varchar(11) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `detail` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`recordId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `studentNumber` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `studentName` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dormBuildId` int(11) NULL DEFAULT NULL,
+  `dormName` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `date` date NULL DEFAULT NULL,
+  `detail` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`recordId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-/*Data for the table `t_record` */
+-- ----------------------------
+-- Records of t_record
+-- ----------------------------
+INSERT INTO `t_record` VALUES (3, '007', '测试1', 1, '221', '2014-08-11', '123');
+INSERT INTO `t_record` VALUES (4, '005', '赵起', 4, '220', '2014-08-12', '...');
+INSERT INTO `t_record` VALUES (5, '006', '王珂珂', 4, '111', '2014-08-12', '00');
+INSERT INTO `t_record` VALUES (6, '004', '李进', 6, '220', '2014-08-12', '....');
+INSERT INTO `t_record` VALUES (7, '004', '李进', 6, '220', '2014-08-12', '22');
+INSERT INTO `t_record` VALUES (16, '003', '王五', 5, '201', '2022-03-18', '111');
+INSERT INTO `t_record` VALUES (17, '002', '李四', 4, '120', '2022-03-19', 'abc');
 
-insert  into `t_record`(`recordId`,`studentNumber`,`studentName`,`dormBuildId`,`dormName`,`date`,`detail`) values (1,'002','李四',4,'120','2014-01-01','123'),(3,'007','测试1',1,'221','2014-08-11','123'),(4,'005','赵起',4,'220','2014-08-12','...'),(5,'006','王珂珂',4,'111','2014-08-12','00'),(6,'004','李进',6,'220','2014-08-12','....'),(7,'004','李进',6,'220','2014-08-12','22');
-
-/*Table structure for table `t_student` */
-
+-- ----------------------------
+-- Table structure for t_student
+-- ----------------------------
 DROP TABLE IF EXISTS `t_student`;
-
-CREATE TABLE `t_student` (
+CREATE TABLE `t_student`  (
   `studentId` int(11) NOT NULL AUTO_INCREMENT,
-  `stuNum` varchar(20) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `name` varchar(20) DEFAULT NULL,
-  `dormBuildId` int(11) DEFAULT NULL,
-  `dormName` varchar(11) DEFAULT NULL,
-  `sex` varchar(10) DEFAULT NULL,
-  `tel` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`studentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+  `stuNum` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `dormBuildId` int(11) NULL DEFAULT NULL,
+  `dormName` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sex` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `tel` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`studentId`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-/*Data for the table `t_student` */
+-- ----------------------------
+-- Records of t_student
+-- ----------------------------
+INSERT INTO `t_student` VALUES (3, '003', '111', '王五', 5, '201', '男', '2');
+INSERT INTO `t_student` VALUES (4, '004', '123', '李进', 6, '220', '女', '1');
+INSERT INTO `t_student` VALUES (5, '005', '123', '赵起', 4, '220', '女', '123');
+INSERT INTO `t_student` VALUES (6, '006', '123', '王珂珂', 4, '111', '女', '111');
+INSERT INTO `t_student` VALUES (9, '007', '123', '测试1', 1, '221', '男', '123');
+INSERT INTO `t_student` VALUES (28, '001', '123', '测试1', 1, '111', '男', '123');
+INSERT INTO `t_student` VALUES (29, '008', '123', '测试3', 6, '123', '男', '123');
+INSERT INTO `t_student` VALUES (32, '019', '123', '喝了咯', 6, '220', '男', '17683994234');
 
-insert  into `t_student`(`studentId`,`stuNum`,`password`,`name`,`dormBuildId`,`dormName`,`sex`,`tel`) values (2,'002','123','李四',4,'120','男','32'),(3,'003','123','王五',5,'201','男','2'),(4,'004','123','李进',6,'220','女','1'),(5,'005','123','赵起',4,'220','女','123'),(6,'006','123','王珂珂',4,'111','女','111'),(9,'007','123','测试1',1,'221','男','123'),(28,'001','123','测试1',1,'111','男','123'),(29,'008','123','测试3',6,'123','男','123'),(30,'009','123','测试4',5,'123','男','123'),(31,'010','123','小强',4,'222','男','111');
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+SET FOREIGN_KEY_CHECKS = 1;
