@@ -13,8 +13,8 @@ spring:
     show-sql: true
     open-in-view: true
   datasource:
-    username: root
-    password: zxc200219
+    username: username
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_dorm?useUnicode=true&characterEncoding=UTF8
   mvc:
